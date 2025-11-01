@@ -1,1 +1,0 @@
-INSERT INTO users (id , name) values(2, 'mustafa');
