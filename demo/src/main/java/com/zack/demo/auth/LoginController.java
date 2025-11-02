@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
-public class LoginControllerControler {
+public class LoginController {
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String,Object>> loginUser(@RequestBody LoginRequestModel loginRequest) {
+    public ResponseEntity<Map<String,Object>> loginUser(@RequestBody LoginRequestDto loginRequest) {
         try {
             String email = loginRequest.getEmail();
             String password = loginRequest.getPassword();

@@ -1,10 +1,10 @@
 package com.zack.demo.auth;
 
-public class LoginRequestModel {
+public class LoginRequestDto {
     private String email;
     private String password;
 
-    public LoginRequestModel() {
+    public LoginRequestDto() {
     }
 
     public String getEmail() {
