@@ -22,7 +22,6 @@ public class LoginController {
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("message", "Login successful");
-            response.put("email", email);
 
             return ResponseEntity.ok(response);
 
