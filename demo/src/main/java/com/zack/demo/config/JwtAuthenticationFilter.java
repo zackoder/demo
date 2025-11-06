@@ -1,6 +1,5 @@
 package com.zack.demo.config;
 
-import com.zack.demo.auth.JwtService;
 import com.zack.demo.user.User;
 import com.zack.demo.user.UserRepository;
 import jakarta.servlet.FilterChain;

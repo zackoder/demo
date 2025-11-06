@@ -1,5 +1,6 @@
 package com.zack.demo.auth;
 
+import com.zack.demo.config.JwtService;
 import com.zack.demo.user.User;
 import com.zack.demo.user.UserRepository;
 import org.springframework.http.ResponseEntity;
