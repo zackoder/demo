@@ -1,0 +1,15 @@
+<div>
+  <form (ngSubmit)="onSubmit()" class="addPost">
+    <div class="content_container">
+      <label for="titel">Enter something</label>
+      <input type="text" id="title" [(ngModel)]="data.content" />
+    </div>
+    <div class="img_container">
+      <label for="image">add image</label>
+      <input type="file" id="image" class="img" />
+    </div>
+    <div>
+      <button type="submit">submit</button>
+    </div>
+  </form>
+</div>

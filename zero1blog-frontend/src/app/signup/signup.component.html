@@ -1,0 +1,124 @@
+<form (ngSubmit)="onSignUp()" class="signup-form" #signupForm="ngForm">
+    
+  <div class="form-group">
+    <label for="nickname">Nickname</label>
+    <input
+      id="nickname"
+      name="nickname"
+      type="text"
+      [(ngModel)]="data.nickname"
+      required
+    />
+    <p class="error" *ngIf="errorMsg.errNickname">{{ errorMsg.errNickname }}</p>
+  </div>
+
+
+  <div class="form-group">
+    <label for="firstName">First Name</label>
+    <input
+      id="firstName"
+      name="firstName"
+      type="text"
+      [(ngModel)]="data.firstName"
+    />
+    <p class="error" *ngIf="errorMsg.errFirstName">
+      {{ errorMsg.errFirstName }}
+    </p>
+  </div>
+
+  <div class="form-group">
+    <label for="lastName">Last Name</label>
+    <input
+      id="lastName"
+      name="lastName"
+      type="text"
+      [(ngModel)]="data.lastName"
+    />
+    <p class="error" *ngIf="errorMsg.errLastName">{{ errorMsg.errLastName }}</p>
+  </div>
+
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input
+      id="email"
+      name="email"
+      type="email"
+      [(ngModel)]="data.email"
+      required
+    />
+    <p class="error" *ngIf="errorMsg.errEmail">{{ errorMsg.errEmail }}</p>
+  </div>
+
+  <!-- Password -->
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input
+      id="password"
+      name="password"
+      type="password"
+      [(ngModel)]="data.password"
+      (ngModelChange)="onPasswordChange($event)"
+      required
+    />
+    <p class="error" *ngIf="errorMsg.errPassword">{{ errorMsg.errPassword }}</p>
+
+    <!-- Password Requirements -->
+    <div class="password-requirements">
+      <p
+        [class.valid]="passwordValidation.hasLowerCase"
+        [class.invalid]="!passwordValidation.hasLowerCase"
+      >
+        ✓ At least one lowercase letter
+      </p>
+      <p
+        [class.valid]="passwordValidation.hasUpperCase"
+        [class.invalid]="!passwordValidation.hasUpperCase"
+      >
+        ✓ At least one uppercase letter
+      </p>
+      <p
+        [class.valid]="passwordValidation.hasNumber"
+        [class.invalid]="!passwordValidation.hasNumber"
+      >
+        ✓ At least one number
+      </p>
+      <p
+        [class.valid]="passwordValidation.hasSpecialChar"
+        [class.invalid]="!passwordValidation.hasSpecialChar"
+      >
+        ✓ At least one special character
+      </p>
+      <p
+        [class.valid]="passwordValidation.hasMinLength"
+        [class.invalid]="!passwordValidation.hasMinLength"
+      >
+        ✓ At least 8 characters
+      </p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="confirmPassword">Confirm Password</label>
+    <input
+      id="confirmPassword"
+      name="confirmPassword"
+      type="password"
+      [(ngModel)]="data.confirmPassword"
+      required
+    />
+    <p class="error" *ngIf="errorMsg.errConfirmPassword">
+      {{ errorMsg.errConfirmPassword }}
+    </p>
+  </div>
+
+  <!-- Bio -->
+  <div class="form-group">
+    <label for="bio">Bio</label>
+    <textarea id="bio" name="bio" [(ngModel)]="data.bio" rows="3"></textarea>
+    <p class="error" *ngIf="errorMsg.errBio">{{ errorMsg.errBio }}</p>
+  </div>
+
+  <button type="submit" [disabled]="isLoading || !signupForm.form.valid">
+    {{ isLoading ? "Signing up..." : "Sign Up" }}
+  </button>
+</form>

@@ -1,0 +1,23 @@
+.password-requirements {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.password-requirements p {
+  margin: 5px 0;
+  transition: color 0.3s ease;
+}
+
+.password-requirements .valid {
+  color: green;
+  font-weight: bold;
+}
+
+.password-requirements .invalid {
+  color: red;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

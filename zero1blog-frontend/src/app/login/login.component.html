@@ -1,0 +1,36 @@
+<form (ngSubmit)="onLogin()" class="log-in_form">
+  <div class="emailContainer">
+    <label for="email">Enter your E-mail or Nickname</label>
+    <input
+      id="email"
+      class="email"
+      type="email"
+      placeholder="Enter your email or Nickname"
+      name="email"
+      [(ngModel)]="data.email"
+      required
+    />
+  </div>
+
+  <div class="passwdContainer">
+    <label for="password">Password</label>
+    <input
+      id="password"
+      class="password"
+      type="password"
+      placeholder="Example@1234"
+      name="password"
+      [(ngModel)]="data.password"
+      (ngModelChange)="onPasswordChange($event)"
+      required
+    />
+  </div>
+
+  @if (errorMessage) {
+  <div class="error-message">{{ errorMessage }}</div>
+  }
+
+  <button type="submit" [disabled]="!isFormValid() || isLoading">
+    {{ isLoading ? "Logging in..." : "Log In" }}
+  </button>
+</form>
