@@ -1,5 +1,4 @@
 <form (ngSubmit)="onSignUp()" class="signup-form" #signupForm="ngForm">
-    
   <div class="form-group">
     <label for="nickname">Nickname</label>
     <input
@@ -11,7 +10,6 @@
     />
     <p class="error" *ngIf="errorMsg.errNickname">{{ errorMsg.errNickname }}</p>
   </div>
-
 
   <div class="form-group">
     <label for="firstName">First Name</label>
@@ -121,4 +119,5 @@
   <button type="submit" [disabled]="isLoading || !signupForm.form.valid">
     {{ isLoading ? "Signing up..." : "Sign Up" }}
   </button>
+  <p>already have an account <a (click)="login()">log in</a></p>
 </form>

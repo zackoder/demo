@@ -1,13 +1,11 @@
 package com.zack.demo.user;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 @Entity
 @Table(name = "users")
-@Getter
-@Setter
+@Data
 public class User {
 
     @Id
@@ -24,4 +22,5 @@ public class User {
     private String lastName;
     private String password;
     private String bio;
+    private String role;
 }

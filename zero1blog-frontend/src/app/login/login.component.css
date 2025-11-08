@@ -21,3 +21,8 @@ button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+a {
+  position: relative;
+  z-index: 1000;
+}

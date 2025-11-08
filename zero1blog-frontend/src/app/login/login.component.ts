@@ -62,4 +62,8 @@ export class LoginComponent {
   isFormValid(): boolean {
     return this.data.email.trim() !== '' && this.data.password.trim() !== '';
   }
+  
+  regester() {
+    this.router.navigate(['/signup']);
+  }
 }

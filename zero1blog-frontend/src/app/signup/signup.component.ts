@@ -143,4 +143,7 @@ export class SignupComponent {
       this.passwordValidation.hasMinLength
     );
   }
+  login() {
+    this.router.navigate(["/login"])
+  }
 }

@@ -15,13 +15,16 @@ export class AddPostComponent {
     content: '',
     file: File,
   };
-  constructor(private http: HttpClient, router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {}
   onSubmit() {
     console.log(this.data);
 
     const token = localStorage.getItem('jwtToken');
 
-    if (!token) return;
+    if (!token) {
+      this.router.navigate(['/login']);
+      return;
+    }
 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,

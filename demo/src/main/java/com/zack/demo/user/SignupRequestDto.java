@@ -1,10 +1,8 @@
 package com.zack.demo.user;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class SignupRequestDto {
     private String nickname;
     private String firstName;
