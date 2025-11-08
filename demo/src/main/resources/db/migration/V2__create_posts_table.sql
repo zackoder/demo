@@ -2,7 +2,7 @@ CREATE TABLE posts (
     id SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
     content VARCHAR(100),
-    imagePath VARCHAR(255),
+    image_path VARCHAR(255),
     visibility BOOLEAN DEFAULT true,
     created_at int,
     CONSTRAINT fk_user
