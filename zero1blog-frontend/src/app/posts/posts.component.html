@@ -1,0 +1,8 @@
+<!-- <button (click)="fetchPosts()">get posts</button> -->
+<div (scroll)="fetchPosts()">
+  @for (post of posts; track post) {
+  <div class="postsContainer">{{ post.content }}</div>
+  } @empty {
+  <div>No items found.</div>
+  }
+</div>

@@ -1,7 +1,10 @@
 package com.zack.demo.post;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -12,13 +15,29 @@ import com.zack.demo.config.JwtService;
 
 @RestController
 @RequestMapping("/api")
-public class AddPostControler {
+public class AddPostController {
 
     @Autowired
     private PostService postService;
 
     @Autowired
     private JwtService jwtService;
+
+    @GetMapping("/getPosts")
+    public ResponseEntity<?> testAddPost(@RequestHeader("authorization") String authHeader) {
+        System.out.println("hello");
+        try {
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                return ResponseEntity.status(401).body("Missing or invalid Authorization header");
+            }
+            List<GetPostDto> posts = postService.getPosts();
+            return ResponseEntity.ok(posts);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(500)
+                    .body("Error creating post: " + e.getMessage());
+        }
+    }
 
     @PostMapping("/addPost")
     public ResponseEntity<?> addPost(@RequestBody AddPostDto dto, @RequestHeader("authorization") String authHeader) {
@@ -38,4 +57,5 @@ public class AddPostControler {
                     .body("Error creating post: " + e.getMessage());
         }
     }
+
 }

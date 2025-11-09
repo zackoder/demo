@@ -1,6 +1,7 @@
 package com.zack.demo.post;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,5 +33,22 @@ public class PostService {
         post.setVisibility(true);
         post.setCreated_at(new Date().getTime() / 1000);
         postRepo.save(post);
+    }
+
+    public List<GetPostDto> getPosts() {
+        List<Post> posts = postRepo.findAll();
+        return posts.stream().map(post -> {
+            GetPostDto dto = new GetPostDto();
+            dto.setId(post.getId());
+            dto.setContent(post.getContent());
+            dto.setImagePath(post.getImagePath());
+            dto.setUserId(post.getUserId());
+            User user = userRepository.findById(post.getUserId())
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+            dto.setNickname(user.getNickname());
+            dto.setVisibility(post.isVisibility());
+            dto.setCreatedAt(post.getCreated_at());
+            return dto;
+        }).toList();
     }
 }
