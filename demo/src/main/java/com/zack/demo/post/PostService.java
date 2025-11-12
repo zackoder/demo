@@ -35,8 +35,8 @@ public class PostService {
         postRepo.save(post);
     }
 
-    public List<GetPostDto> getPosts() {
-        List<Post> posts = postRepo.findAll();
+    public List<GetPostDto> getPosts(int offset) {
+        List<Post> posts = postRepo.findPostsByOffsetAndLimit(offset);
         return posts.stream().map(post -> {
             GetPostDto dto = new GetPostDto();
             dto.setId(post.getId());

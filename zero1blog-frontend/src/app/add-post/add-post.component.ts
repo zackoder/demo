@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { OffsetLimitService } from '../services/offset-limit.service';
 
 @Component({
   selector: 'app-add-post',
@@ -15,6 +16,9 @@ export class AddPostComponent {
     content: '',
     file: File,
   };
+
+  OffsetService = new OffsetLimitService();
+
   constructor(private http: HttpClient, private router: Router) {}
   onSubmit() {
     console.log(this.data);
@@ -35,7 +39,12 @@ export class AddPostComponent {
         headers: { Authorization: `Bearer ${token}` },
       })
       .subscribe({
-        next: (res) => console.log(res),
+        next: (res) => {
+          const priv_offset = this.OffsetService.getOffset();
+          console.log(priv_offset);
+
+          this.OffsetService.setOffset(priv_offset + 1);
+        },
         error: (err) => console.error(err),
       });
   }

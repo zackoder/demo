@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { OffsetLimitService } from '../services/offset-limit.service';
 
 @Component({
   selector: 'app-posts',
@@ -11,33 +12,29 @@ import { Router } from '@angular/router';
 export class PostsComponent implements OnInit {
   posts: any[] = [];
   nothingToFetch = false;
-  
+  offsetService = new OffsetLimitService();
+  isLoading = false;
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
+    console.log('befor fetching', this.offsetService.getOffset());
+
     this.fetchPosts();
   }
 
   @HostListener('window:scroll', ['$event'])
-  onScroll(event: Event) {
-    // 1. Calculate the distance scrolled from the top of the document
+  onScroll() {
     const scrollPosition = window.pageYOffset;
-
-    // 2. Calculate the height of the entire document
     const documentHeight = document.documentElement.scrollHeight;
-
-    // 3. Get the height of the viewport
     const viewportHeight = window.innerHeight;
-
-    // Check if the user is near the bottom (e.g., within 200px)
     if (scrollPosition + viewportHeight >= documentHeight - 200) {
-      // console.log(this.nothingToFetch);
-
-      this.fetchPosts();
+      this.fetchPosts(this.offsetService.getOffset());
     }
   }
 
-  fetchPosts() {
+  fetchPosts(offset = 0) {
+    if (this.isLoading) return;
+    this.isLoading = true;
     const token = localStorage.getItem('jwtToken');
     if (!token) {
       this.router.navigate(['/login']);
@@ -50,7 +47,9 @@ export class PostsComponent implements OnInit {
       Authorization: `Bearer ${token}`,
     });
     this.http
-      .get<any[]>('http://localhost:8080/api/getPosts', { headers })
+      .get<any[]>(`http://localhost:8080/api/getPosts?offset=${offset}`, {
+        headers,
+      })
       .subscribe({
         next: (data: any) => {
           if (!Array.isArray(data)) {
@@ -61,8 +60,16 @@ export class PostsComponent implements OnInit {
           this.posts.forEach((post: any) => {
             console.log(post.content);
           });
+          this.isLoading = false;
+          this.offsetService.setOffset(this.posts.length);
         },
-        error: (err) => console.error(err),
+        error: (err) => {
+          if (err.status) {
+            this.router.navigate(['/login']);
+          }
+          console.error('errro:', err);
+          this.isLoading = false;
+        },
       });
   }
 }

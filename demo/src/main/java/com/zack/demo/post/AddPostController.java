@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zack.demo.config.JwtService;
@@ -24,13 +25,13 @@ public class AddPostController {
     private JwtService jwtService;
 
     @GetMapping("/getPosts")
-    public ResponseEntity<?> testAddPost(@RequestHeader("authorization") String authHeader) {
-        System.out.println("hello");
+    public ResponseEntity<?> testAddPost(@RequestParam int offset, @RequestHeader("authorization") String authHeader) {
+        System.out.println("offset: " + offset);
         try {
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
                 return ResponseEntity.status(401).body("Missing or invalid Authorization header");
             }
-            List<GetPostDto> posts = postService.getPosts();
+            List<GetPostDto> posts = postService.getPosts(offset);
             return ResponseEntity.ok(posts);
         } catch (Exception e) {
             return ResponseEntity
@@ -41,7 +42,6 @@ public class AddPostController {
 
     @PostMapping("/addPost")
     public ResponseEntity<?> addPost(@RequestBody AddPostDto dto, @RequestHeader("authorization") String authHeader) {
-        System.out.println("Headers: " + authHeader);
         try {
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
                 return ResponseEntity.status(401).body("Missing or invalid Authorization header");
@@ -50,7 +50,7 @@ public class AddPostController {
             String nickname = jwtService.extractUsername(jwt);
             System.out.println("Extracted nickname: " + nickname);
             postService.savePost(dto, nickname);
-            return ResponseEntity.ok("good");
+            return ResponseEntity.ok(dto);
         } catch (Exception e) {
             return ResponseEntity
                     .status(500)
