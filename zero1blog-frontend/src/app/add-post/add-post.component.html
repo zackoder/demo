@@ -2,11 +2,16 @@
   <form (ngSubmit)="onSubmit()" class="addPost">
     <div class="content_container">
       <label for="titel">Enter something</label>
-      <input name="title" type="text" id="title" [(ngModel)]="data.content" />
+      <input name="title" type="text" id="title" [(ngModel)]="content" />
     </div>
     <div class="img_container">
       <label for="image">add image</label>
-      <input type="file" id="image" class="img" />
+      <input
+        (change)="OnSelectFile($event)"
+        type="file"
+        id="image"
+        class="img"
+      />
     </div>
     <div>
       <button type="submit">submit</button>

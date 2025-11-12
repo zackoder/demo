@@ -9,6 +9,7 @@ import { OffsetLimitService } from '../services/offset-limit.service';
   templateUrl: './posts.component.html',
   styleUrl: './posts.component.css',
 })
+
 export class PostsComponent implements OnInit {
   posts: any[] = [];
   nothingToFetch = false;

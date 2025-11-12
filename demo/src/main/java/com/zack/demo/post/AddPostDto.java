@@ -7,5 +7,4 @@ public class AddPostDto {
     private Integer id;
     private String content;
     private Integer user_id;
-    
 }
