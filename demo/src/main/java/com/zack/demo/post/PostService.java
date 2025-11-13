@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.tika.Tika;
-import org.bouncycastle.mail.smime.handlers.pkcs7_signature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -61,7 +60,7 @@ public class PostService {
         return "successfully";
     }
 
-    public List<GetPostDto> getPosts(int offset) {
+    public List<GetPostDto> getPosts(int offset, String nickname) {
         List<Post> posts = postRepo.findPostsByOffsetAndLimit(offset);
         return posts.stream().map(post -> {
             GetPostDto dto = new GetPostDto();
@@ -69,7 +68,7 @@ public class PostService {
             dto.setContent(post.getContent());
             dto.setImagePath(post.getImagePath());
             dto.setUserId(post.getUserId());
-            User user = userRepository.findById(post.getUserId())
+            User user = userRepository.findByNickname(nickname)
                     .orElseThrow(() -> new RuntimeException("User not found"));
             dto.setNickname(user.getNickname());
             dto.setVisibility(post.isVisibility());
@@ -98,15 +97,12 @@ public class PostService {
         }
 
         Date currentTime = new Date();
-        fileName += currentTime.toString() + "_" + file.getName();
+        fileName += currentTime.getTime() + "_" + file.getOriginalFilename();
         return fileName;
     }
 
     public String storeFile(String fileName, MultipartFile file) {
-        System.out.println("--------------------------------");
         Path uploadBasePath = Paths.get("uploads").toAbsolutePath().normalize();
-
-        System.out.println("uploads path " + uploadBasePath.toString());
 
         String[] splited = fileName.split("/");
         Path targetDir = uploadBasePath.resolve(splited[0]);

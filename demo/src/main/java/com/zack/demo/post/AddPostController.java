@@ -34,7 +34,10 @@ public class AddPostController {
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
                 return ResponseEntity.status(401).body("Missing or invalid Authorization header");
             }
-            List<GetPostDto> posts = postService.getPosts(offset);
+
+            String nickname = jwtService.extractUsername("nickname");
+            List<GetPostDto> posts = postService.getPosts(offset, nickname);
+
             return ResponseEntity.ok(posts);
         } catch (Exception e) {
             return ResponseEntity
@@ -58,8 +61,6 @@ public class AddPostController {
             System.out.println("Extracted nickname: " + nickname);
 
             postService.savePost(content, nickname, file);
-
-            // postService.savePost(dto, nickname, file);
 
             return ResponseEntity.ok("good");
         } catch (Exception e) {
