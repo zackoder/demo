@@ -32,9 +32,12 @@ public class PostService {
         Post post = new Post();
         String filePath = uploadFile(file);
 
-        if (!filePath.startsWith("images") || !filePath.startsWith("videos")) {
+        if (!filePath.startsWith("images/") && !filePath.startsWith("videos/")) {
+            System.out.println("file to add " + filePath);
             return filePath;
         }
+
+        System.out.println("file to add " + filePath);
 
         String message = storeFile(filePath, file);
 
@@ -81,27 +84,30 @@ public class PostService {
         try {
             byte[] bytes = file.getBytes();
             if (bytes.length > 0) {
-                if (tika.detect(bytes).startsWith("image") || tika.detect(bytes).startsWith("video")) {
-                    Date currentTime = new Date();
-                    if (tika.detect(bytes).startsWith("image")) {
-                        fileName = "images/";
-                    } else if (tika.detect(bytes).startsWith("video")) {
-                        fileName = "videos/";
-                    }
-                    fileName += currentTime.toString() + "_" + file.getName();
+                if (tika.detect(bytes).startsWith("image")) {
+                    fileName = "images/";
+                } else if (tika.detect(bytes).startsWith("video")) {
+                    fileName = "videos/";
                 } else {
-                    return "invalid type of file";
+                    System.out.println("file type " + tika.detect(bytes));
+                    return "invalid type of file\n";
                 }
             }
         } catch (Exception e) {
-            return "couldn't read the file";
+            return "couldn't read the file\n";
         }
 
+        Date currentTime = new Date();
+        fileName += currentTime.toString() + "_" + file.getName();
         return fileName;
     }
 
     public String storeFile(String fileName, MultipartFile file) {
+        System.out.println("--------------------------------");
         Path uploadBasePath = Paths.get("uploads").toAbsolutePath().normalize();
+
+        System.out.println("uploads path " + uploadBasePath.toString());
+
         String[] splited = fileName.split("/");
         Path targetDir = uploadBasePath.resolve(splited[0]);
         try {
@@ -117,6 +123,6 @@ public class PostService {
     }
 
     private void removeFile(String path) {
-        
+
     }
 }
