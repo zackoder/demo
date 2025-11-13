@@ -29,26 +29,29 @@ public class PostService {
 
     public String savePost(String content, String userNickname, MultipartFile file) {
         Post post = new Post();
-        String filePath = uploadFile(file);
+        String filePath = "";
 
-        if (!filePath.startsWith("images/") && !filePath.startsWith("videos/")) {
-            System.out.println("file to add " + filePath);
-            return filePath;
-        }
-
-        System.out.println("file to add " + filePath);
-
-        String message = storeFile(filePath, file);
-
-        if (!message.equals("successfully")) {
-            return message;
-        }
-
-        User user = userRepository.findByEmail(userNickname).get();
-
+        User user = userRepository.findByNickname(userNickname).get();
         if (user == null) {
             removeFile(filePath);
             return "user not found";
+        }
+
+        if (file != null) {
+            filePath = uploadFile(file);
+
+            if (!filePath.startsWith("images/") && !filePath.startsWith("videos/")) {
+                System.out.println("file to add " + filePath);
+                return filePath;
+            }
+
+            System.out.println("file to add " + filePath);
+
+            String message = storeFile(filePath, file);
+
+            if (!message.equals("successfully")) {
+                return message;
+            }
         }
 
         post.setContent(content);
@@ -56,6 +59,7 @@ public class PostService {
         post.setUserId(user.getId());
         post.setVisibility(true);
         post.setCreated_at(new Date().getTime() / 1000);
+        System.out.println(post.toString());
         postRepo.save(post);
         return "successfully";
     }

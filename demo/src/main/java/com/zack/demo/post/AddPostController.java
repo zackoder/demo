@@ -35,11 +35,12 @@ public class AddPostController {
                 return ResponseEntity.status(401).body("Missing or invalid Authorization header");
             }
 
-            String nickname = jwtService.extractUsername("nickname");
+            String nickname = jwtService.extractUsername(authHeader.substring(7));
             List<GetPostDto> posts = postService.getPosts(offset, nickname);
 
             return ResponseEntity.ok(posts);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity
                     .status(500)
                     .body("Error creating post: " + e.getMessage());
@@ -65,6 +66,7 @@ public class AddPostController {
             return ResponseEntity.ok("good");
         } catch (Exception e) {
             System.err.println("Error details: " + e.getMessage());
+            System.err.println("content: " + content);
             return ResponseEntity
                     .status(500)
                     .body("Error creating post: " + e.getMessage());

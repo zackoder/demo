@@ -59,7 +59,7 @@ export class PostsComponent implements OnInit {
           }
           this.posts = this.posts.concat(data);
           this.posts.forEach((post: any) => {
-            console.log(post.content);
+            console.log(post);
           });
           this.isLoading = false;
           this.offsetService.setOffset(this.posts.length);

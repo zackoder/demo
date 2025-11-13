@@ -1,7 +1,22 @@
 <!-- <button (click)="fetchPosts()">get posts</button> -->
 
 @for (post of posts; track post) {
-<div class="postsContainer">{{ post.content }}</div>
+<div class="postsContainer">
+  <h2>{{ post.nickname }}</h2>
+  <div>
+    <p>{{ post.content }}</p>
+    @if (post.imagePath && post.imagePath.startsWith("image")) {
+    <img [src]="post.imagePath" alt="Post Image" />
+    } @if (post.imagePath && post.imagePath.startsWith("video")) {
+    <video [src]="post.imagePath"></video>
+    }
+  </div>
+  <div>
+    <button>Like</button>
+    <button>Dislike</button>
+    <button>Comments</button>
+  </div>
+</div>
 } @empty {
 <div>No items found.</div>
 }
