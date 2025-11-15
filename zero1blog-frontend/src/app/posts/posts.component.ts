@@ -9,7 +9,6 @@ import { OffsetLimitService } from '../services/offset-limit.service';
   templateUrl: './posts.component.html',
   styleUrl: './posts.component.css',
 })
-
 export class PostsComponent implements OnInit {
   posts: any[] = [];
   nothingToFetch = false;
@@ -72,5 +71,14 @@ export class PostsComponent implements OnInit {
           this.isLoading = false;
         },
       });
+  }
+  like(postId: number) {
+    console.log('post id is:', postId);
+  }
+  dislike(postId: number) {
+    console.log('post id is:', postId);
+  }
+  showComments(postId: number) {
+    console.log('post id is:', postId);
   }
 }

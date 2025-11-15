@@ -12,9 +12,12 @@
     }
   </div>
   <div>
-    <button>Like</button>
-    <button>Dislike</button>
-    <button>Comments</button>
+    <button (click)="like(post.id)">Like</button>
+    <span>00</span>
+    <button (click)="dislike(post.id)">Dislike</button>
+    <span>00</span>
+    <button (click)="showComments(post.id)">Comments</button>
+    <span>00</span>
   </div>
 </div>
 } @empty {
