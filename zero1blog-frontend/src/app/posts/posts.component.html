@@ -6,17 +6,20 @@
   <div>
     <p>{{ post.content }}</p>
     @if (post.imagePath && post.imagePath.startsWith("image")) {
-    <img [src]="post.imagePath" alt="Post Image" />
+    <img
+      [src]="`http://localhost:8080/uploads/${post.imagePath}`"
+      alt="Post Image"
+    />
     } @if (post.imagePath && post.imagePath.startsWith("video")) {
     <video [src]="post.imagePath"></video>
     }
   </div>
   <div>
-    <button (click)="like(post.id)">Like</button>
+    <!-- <button (click)="like(post.id)">Like</button> -->
     <span>00</span>
-    <button (click)="dislike(post.id)">Dislike</button>
+    <!-- <button (click)="dislike(post.id)">Dislike</button> -->
     <span>00</span>
-    <button (click)="showComments(post.id)">Comments</button>
+    <!-- <button (click)="showComments(post.id)">Comments</button> -->
     <span>00</span>
   </div>
 </div>

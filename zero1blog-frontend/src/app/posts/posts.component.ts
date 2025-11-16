@@ -72,13 +72,13 @@ export class PostsComponent implements OnInit {
         },
       });
   }
-  like(postId: number) {
-    console.log('post id is:', postId);
-  }
-  dislike(postId: number) {
-    console.log('post id is:', postId);
-  }
-  showComments(postId: number) {
-    console.log('post id is:', postId);
-  }
+  // like(postId: number) {
+  //   console.log('post id is:', postId);
+  // }
+  // dislike(postId: number) {
+  //   console.log('post id is:', postId);
+  // }
+  // showComments(postId: number) {
+  //   console.log('post id is:', postId);
+  // }
 }
