@@ -15,10 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.zack.demo.user.User;
 import com.zack.demo.user.UserRepository;
 
-import lombok.Data;
-
 @Service
-@Data
 public class PostService {
 
     @Autowired
@@ -65,20 +62,8 @@ public class PostService {
     }
 
     public List<GetPostDto> getPosts(int offset, String nickname) {
-        List<Post> posts = postRepo.findPostsByOffsetAndLimit(offset);
-        return posts.stream().map(post -> {
-            GetPostDto dto = new GetPostDto();
-            dto.setId(post.getId());
-            dto.setContent(post.getContent());
-            dto.setImagePath(post.getImagePath());
-            dto.setUserId(post.getUserId());
-            User user = userRepository.findByNickname(nickname)
-                    .orElseThrow(() -> new RuntimeException("User not found"));
-            dto.setNickname(user.getNickname());
-            dto.setVisibility(post.isVisibility());
-            dto.setCreatedAt(post.getCreated_at());
-            return dto;
-        }).toList();
+        return postRepo.findPostsByOffsetAndLimit(offset);
+
     }
 
     private String uploadFile(MultipartFile file) {

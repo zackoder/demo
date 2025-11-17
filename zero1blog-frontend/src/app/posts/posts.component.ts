@@ -72,13 +72,37 @@ export class PostsComponent implements OnInit {
         },
       });
   }
-  // like(postId: number) {
-  //   console.log('post id is:', postId);
-  // }
-  // dislike(postId: number) {
-  //   console.log('post id is:', postId);
-  // }
-  // showComments(postId: number) {
-  //   console.log('post id is:', postId);
-  // }
+
+  reaction(postId: number, reaction: string) {
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    if (!reaction || (reaction !== 'like' && reaction !== 'dislike')) {
+      return;
+    }
+
+    this.http
+      .post(
+        `http://localhost:8080/api/reaction`,
+        { target: 'post', targetId: postId, reactionType: reaction },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .subscribe({
+        next: (res) => {
+          
+        },
+        error: (e) => {
+          console.log('reacting to post error :', e);
+        },
+      });
+    console.log('post id is:', postId, 'reaction: ', reaction);
+  }
+  showComments(postId: number) {
+    console.log('post id is:', postId);
+  }
 }

@@ -15,11 +15,11 @@
     }
   </div>
   <div>
-    <!-- <button (click)="like(post.id)">Like</button> -->
-    <span>00</span>
-    <!-- <button (click)="dislike(post.id)">Dislike</button> -->
-    <span>00</span>
-    <!-- <button (click)="showComments(post.id)">Comments</button> -->
+    <button (click)="reaction(post.id, 'like')">Like</button>
+    <span>{{ post.likes }}</span>
+    <button (click)="reaction(post.id, 'dislike')">Dislike</button>
+    <span> {{ post.dislikes }} </span>
+    <button (click)="showComments(post.id)">Comments</button>
     <span>00</span>
   </div>
 </div>
