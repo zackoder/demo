@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { OffsetLimitService } from '../services/offset-limit.service';
 
@@ -10,10 +10,10 @@ import { OffsetLimitService } from '../services/offset-limit.service';
   styleUrl: './posts.component.css',
 })
 export class PostsComponent implements OnInit {
-  posts: any[] = [];
   nothingToFetch = false;
   offsetService = new OffsetLimitService();
   isLoading = false;
+  posts = signal<any>([]);
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
@@ -56,10 +56,11 @@ export class PostsComponent implements OnInit {
             data = [];
             this.nothingToFetch = true;
           }
-          this.posts = this.posts.concat(data);
-          this.posts.forEach((post: any) => {
+          this.posts.update((current) => [...current, ...data]);
+          this.posts().forEach((post: any) => {
             console.log(post);
           });
+
           this.isLoading = false;
           this.offsetService.setOffset(this.posts.length);
         },
@@ -73,7 +74,7 @@ export class PostsComponent implements OnInit {
       });
   }
 
-  reaction(postId: number, reaction: string) {
+  reaction(postId: number, reaction: string, index: number) {
     const token = localStorage.getItem('jwtToken');
     if (!token) {
       this.router.navigate(['/login']);
@@ -81,6 +82,10 @@ export class PostsComponent implements OnInit {
     }
 
     if (!reaction || (reaction !== 'like' && reaction !== 'dislike')) {
+      return;
+    }
+    if (!postId) {
+      alert("id desn't exists");
       return;
     }
 
@@ -94,7 +99,9 @@ export class PostsComponent implements OnInit {
       )
       .subscribe({
         next: (res) => {
-          
+          console.log('index', this.posts()[index].likes);
+          this.posts()[index].likes += 1;
+          console.log('index', this.posts()[index].likes);
         },
         error: (e) => {
           console.log('reacting to post error :', e);

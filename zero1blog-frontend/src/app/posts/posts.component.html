@@ -1,6 +1,6 @@
 <!-- <button (click)="fetchPosts()">get posts</button> -->
 
-@for (post of posts; track post) {
+@for (post of posts(); track post.id; let i = $index) {
 <div class="postsContainer">
   <h2>{{ post.nickname }}</h2>
   <div>
@@ -15,9 +15,9 @@
     }
   </div>
   <div>
-    <button (click)="reaction(post.id, 'like')">Like</button>
+    <button (click)="reaction(post.id, 'like', i)">Like</button>
     <span>{{ post.likes }}</span>
-    <button (click)="reaction(post.id, 'dislike')">Dislike</button>
+    <button (click)="reaction(post.id, 'dislike', i)">Dislike</button>
     <span> {{ post.dislikes }} </span>
     <button (click)="showComments(post.id)">Comments</button>
     <span>00</span>
