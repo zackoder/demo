@@ -20,7 +20,7 @@ jobs:
 
       - name: Install Angular dependencies
         run: |
-          cd frontend
+          cd zero1blog-frontend
           npm install
 
       - name: Build Angular
@@ -37,7 +37,7 @@ jobs:
 
       - name: Build Spring Boot
         run: |
-          cd backend
+          cd demo
           ./mvnw -DskipTests package
 
       # --------- DOCKER BUILD & PUSH ---------
