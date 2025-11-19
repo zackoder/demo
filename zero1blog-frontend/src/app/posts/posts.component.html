@@ -1,28 +1,36 @@
 <!-- <button (click)="fetchPosts()">get posts</button> -->
-
-@for (post of posts(); track post.id; let i = $index) {
 <div class="postsContainer">
-  <h2>{{ post.nickname }}</h2>
-  <div>
-    <p>{{ post.content }}</p>
-    @if (post.imagePath && post.imagePath.startsWith("image")) {
-    <img
-      [src]="`http://localhost:8080/uploads/${post.imagePath}`"
-      alt="Post Image"
-    />
-    } @if (post.imagePath && post.imagePath.startsWith("video")) {
-    <video [src]="post.imagePath"></video>
-    }
+  @for (post of posts(); track post.id; let i = $index) {
+  <div class="post">
+    <h2>{{ post.nickname }}</h2>
+    <span class="bars"><i class="fa-solid fa-bars"></i> </span>
+    <p class="date">{{ formatDate(post.created_at) }}</p>
+    <div>
+      <p>{{ post.content }}</p>
+      <div class="fileContainer">
+        @if (post.image_path && post.image_path.startsWith("image")) {
+        <img
+          [src]="`http://localhost:8080/uploads/${post.image_path}`"
+          alt="Post Image"
+        />
+        } @if (post.image_path && post.image_path.startsWith("videos")) {
+        <video
+          [src]="`http://localhost:8080/uploads/${post.image_path}`"
+          controls
+        ></video>
+        }
+      </div>
+    </div>
+    <div>
+      <button (click)="reaction(post.id, 'like', i)">Like</button>
+      <span>{{ post.likes }}</span>
+      <button (click)="reaction(post.id, 'dislike', i)">Dislike</button>
+      <span> {{ post.dislikes }} </span>
+      <button (click)="showComments(post.id)">Comments</button>
+      <span>00</span>
+    </div>
   </div>
-  <div>
-    <button (click)="reaction(post.id, 'like', i)">Like</button>
-    <span>{{ post.likes }}</span>
-    <button (click)="reaction(post.id, 'dislike', i)">Dislike</button>
-    <span> {{ post.dislikes }} </span>
-    <button (click)="showComments(post.id)">Comments</button>
-    <span>00</span>
-  </div>
+  } @empty {
+  <div>No items found.</div>
+  }
 </div>
-} @empty {
-<div>No items found.</div>
-}

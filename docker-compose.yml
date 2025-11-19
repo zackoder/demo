@@ -1,0 +1,35 @@
+version: "3.9"
+services:
+  backend:
+    image: yourname/backend:latest
+    container_name: backend
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/blog01
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: 123456789
+    depends_on:
+      - db
+
+  frontend:
+    image: yourname/frontend:latest
+    container_name: frontend
+    ports:
+      - "80:80"
+
+  db:
+    image: postgres:15
+    container_name: blog01-db
+    restart: always
+    environment:
+      POSTGRES_DB: blog01
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 123456789
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

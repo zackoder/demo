@@ -14,6 +14,8 @@ export class PostsComponent implements OnInit {
   offsetService = new OffsetLimitService();
   isLoading = false;
   posts = signal<any>([]);
+  prevScrollPosition = window.pageYOffset;
+
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
@@ -24,10 +26,13 @@ export class PostsComponent implements OnInit {
 
   @HostListener('window:scroll', ['$event'])
   onScroll() {
-    const scrollPosition = window.pageYOffset;
+    const newvScrollPosition = window.pageYOffset;
+    if (newvScrollPosition < this.prevScrollPosition) return;
+    else this.prevScrollPosition = newvScrollPosition;
+
     const documentHeight = document.documentElement.scrollHeight;
     const viewportHeight = window.innerHeight;
-    if (scrollPosition + viewportHeight >= documentHeight - 200) {
+    if (this.prevScrollPosition + viewportHeight >= documentHeight - 200) {
       this.fetchPosts(this.offsetService.getOffset());
     }
   }
@@ -40,6 +45,7 @@ export class PostsComponent implements OnInit {
       this.router.navigate(['/login']);
       return;
     }
+
     if (this.nothingToFetch) {
       return;
     }
@@ -52,17 +58,15 @@ export class PostsComponent implements OnInit {
       })
       .subscribe({
         next: (data: any) => {
-          if (!Array.isArray(data)) {
+          console.log(data);
+
+          if (!Array.isArray(data) || data.length === 0) {
             data = [];
             this.nothingToFetch = true;
           }
           this.posts.update((current) => [...current, ...data]);
-          this.posts().forEach((post: any) => {
-            console.log(post);
-          });
-
           this.isLoading = false;
-          this.offsetService.setOffset(this.posts.length);
+          this.offsetService.setOffset(this.posts().length);
         },
         error: (err) => {
           if (err.status) {
@@ -111,5 +115,34 @@ export class PostsComponent implements OnInit {
   }
   showComments(postId: number) {
     console.log('post id is:', postId);
+  }
+
+  formatDate(ceaiation: number) {
+    let now: number = new Date().getTime() / 1000;
+    let ceaiationDate = new Date(ceaiation * 1000);
+    let duration: number = now - ceaiation;
+    let onemin = 60;
+    let oneHour = onemin * 60;
+    let oneDay = oneHour * 24;
+    let oneMon = oneDay * 30;
+
+    if (duration > oneMon * 6) {
+      return `${ceaiationDate.getFullYear()}/${
+        ceaiationDate.getMonth() + 1
+      }/${ceaiationDate.getDate()}`;
+    }
+
+    if (duration >= oneMon) {
+      const months = Math.floor(duration / oneMon);
+      return months === 1 ? '1 Month ago' : `${months} Months ago`;
+    }
+
+    if (duration >= oneDay) return `${Math.floor(duration / oneDay)} d ago`;
+
+    if (duration >= oneHour) return `${Math.floor(duration / oneHour)} H ago`;
+
+    if (duration >= onemin) return `${Math.floor(duration / onemin)} min ago`;
+
+    return `${Math.floor(duration)} s ago`;
   }
 }

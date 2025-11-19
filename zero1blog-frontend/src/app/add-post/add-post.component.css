@@ -1,0 +1,96 @@
+.addPost {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 2rem auto;
+  background-color: var(
+    --color-post
+  ); 
+  border: 1px solid var(--color-border); 
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); 
+  transition: background-color 0.4s;
+}
+
+@media (prefers-color-scheme: dark) {
+  .addPost {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* --- Form Sections --- */
+
+.content_container,
+.img_container,
+form > div {
+  margin-bottom: 1.5rem;
+}
+
+/* --- Labels --- */
+
+label {
+  display: block;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-text-primary);
+}
+
+/* --- Text Area (Content Input) --- */
+
+.content_container textarea {
+  font-family: var(--font-sans);
+  width: 100%;
+  padding: 1rem;
+  min-height: 200px;
+  resize: none;
+  font-size: 1rem;
+  line-height: 1.5;
+
+  color: var(--color-text-primary);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+
+.content_container textarea:focus {
+  border-color: var(--color-accent);
+  outline: none;
+  box-shadow: 0 0 0 1px var(--color-accent); 
+}
+
+/* --- File Input (Image) --- */
+
+.img_container input[type="file"] {
+  width: 100%;
+  padding: 0.5rem 0;
+  font-size: 0.95rem;
+  display: none;
+}
+
+/* --- Submit Button --- */
+
+button[type="submit"] {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  background-color: var(--color-accent);
+  color: var(
+    --color-bg
+  );
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  transition: background-color 0.3s, opacity 0.3s;
+}
+
+button[type="submit"]:hover {
+  opacity: 0.9;
+}
+
+button[type="submit"]:disabled {
+  background-color: var(--color-text-secondary);
+  cursor: not-allowed;
+}
