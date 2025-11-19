@@ -9,20 +9,61 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Build backend Docker image
-        run: docker-compose build backend
+      # --------- FRONTEND ---------
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
 
-      - name: Run backend tests
-        run: docker-compose run --rm backend ./mvnw test
+      - name: Install Angular dependencies
+        run: |
+          cd zero1blog-frontend
+          npm install
+
+      - name: Build Angular
+        run: |
+          cd zero1blog-frontend
+          npm run build
+
+      - name: Run Angular tests
+        run: |
+          cd zero1blog-frontend
+          npm run test -- --watch=false --browsers=ChromeHeadless
+
+      # --------- BACKEND ---------
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - name: Build Spring Boot
+        run: |
+          cd demo
+          ./mvnw -DskipTests package
+
+      - name: Run Spring Boot tests
+        run: |
+          cd demo
+          ./mvnw test
+
+      # --------- DOCKER COMPOSE ---------
+      - name: Build backend Docker image
+        run: docker compose build backend
 
       - name: Build frontend Docker image
-        run: docker-compose build frontend
+        run: docker compose build frontend
 
-      - name: Run frontend tests
-        run: docker-compose run --rm frontend npm run test -- --watch=false --browsers=ChromeHeadless
+      - name: Run backend container for testing
+        run: docker compose run --rm backend ./mvnw test
 
+      - name: Run frontend container for testing
+        run: docker compose run --rm frontend npm run test -- --watch=false --browsers=ChromeHeadless
+
+      # Optional: bring up full stack
       - name: Start full stack
-        run: docker-compose up -d
+        run: docker compose up -d
