@@ -25,7 +25,7 @@ jobs:
 
       - name: Build Angular
         run: |
-          cd frontend
+          cd zero1blog-frontend
           npm run build
 
       # --------- BACKEND ---------
