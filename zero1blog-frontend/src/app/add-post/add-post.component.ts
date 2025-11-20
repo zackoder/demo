@@ -30,7 +30,7 @@ export class AddPostComponent {
     }
   }
 
-  onSubmitm(): void {
+  onSubmit(): void {
     const token = localStorage.getItem('jwtToken');
 
     if (!token) {

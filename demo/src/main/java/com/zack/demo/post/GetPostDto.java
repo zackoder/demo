@@ -17,4 +17,5 @@ public class GetPostDto {
     private String nickname;
     private long likes;
     private long dislikes;
+    private boolean postOwner;
 }

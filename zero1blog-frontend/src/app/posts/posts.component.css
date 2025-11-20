@@ -13,10 +13,102 @@
   max-width: 90%;
   padding: 20px;
   background-color: var(--color-post);
+  position: relative;
+}
+
+.userNickname {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0;
 }
 
 i {
-  font-size: 50px;
+  font-size: 30px;
+}
+
+/* .actionMenu {
+  height: 70px;
+  width: 200px;
+  position: absolute;
+  top: 20%;
+  left: 75%;
+  border: black 1px solid;
+  background: #fff;
+  color: black;
+}
+
+.opptions {
+  list-style: none;
+}
+
+.opptions li {
+  padding-left: 15px;
+} */
+/* --- 1. ACTION MENU CONTAINER (.actionMenu) --- */
+
+.actionMenu {
+  /* Positioning: Assumes it is positioned absolutely/fixed relative to its trigger */
+  position: absolute; /* Key for floating over content */
+  z-index: 1000; /* Ensure it stays above everything else */
+  top: 60px; /* Position it just below the trigger icon */
+  right: 20px; /* Align it to the right of the trigger icon */
+
+  /* Appearance */
+  min-width: 150px; /* Ensure enough space for text */
+  /* padding: 0.5rem 0;  */
+
+  /* Color and Shadow */
+  background-color: var(--color-post); /* Use the surface color for contrast */
+  border: 1px solid var(--color-border); /* Subtle border */
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Soft, noticeable shadow */
+
+  /* Hide it by default if using CSS hide/show (e.g., opacity: 0; visibility: hidden;) */
+}
+
+/* Adjust shadow for better visibility in Dark Mode */
+@media (prefers-color-scheme: dark) {
+  .actionMenu {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* --- 2. THE UNORDERED LIST (.opptions) --- */
+
+.actionMenu .opptions {
+  list-style: none; /* Remove default bullet points */
+  margin: 0;
+  padding: 0;
+}
+
+/* --- 3. LIST ITEMS (li) --- */
+
+.actionMenu .opptions li {
+  padding: 0.75rem 1rem; /* Generous padding for clickable area */
+  font-size: 0.95rem;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  white-space: nowrap; /* Prevents text wrapping */
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* Hover Effect: The most critical part for usability */
+.actionMenu .opptions li:hover {
+  background-color: var(
+    --color-border
+  ); /* Use border color for a subtle hover background */
+  color: var(--color-accent); /* Highlight the text with the accent color */
+}
+
+/* --- 4. ICONS (i) --- */
+
+.actionMenu .opptions li i {
+  margin-right: 0.75rem; /* Space between icon and text */
+  /* Ensure the icon color matches the text or accent color */
+  color: inherit; /* Inherits the color from the parent <li> */
+  width: 1.25rem; /* Fix width to prevent text jump */
+  text-align: center;
 }
 .bars {
   width: 20px;

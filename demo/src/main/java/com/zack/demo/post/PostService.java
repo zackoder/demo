@@ -62,8 +62,11 @@ public class PostService {
     }
 
     public List<GetPostDto> getPosts(int offset, String nickname) {
-        return postRepo.findPostsByOffsetAndLimit(offset);
-
+        User user = userRepository.findByNickname(nickname).get();
+        if (user == null) {
+            return null;
+        }
+        return postRepo.findPostsByOffsetAndLimit(user.getId(), offset);
     }
 
     private String uploadFile(MultipartFile file) {

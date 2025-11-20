@@ -159,7 +159,7 @@ img {
   :root {
     /* Your specified dark background colors */
     --color-bg: rgb(22, 22, 45); /* Dark background (Page) */
-    --color-post: rgba(89, 89, 134, 0.418); /* Darker surface (Post/Header) */
+    --color-post: rgb(55, 60, 112); /* Darker surface (Post/Header) */
 
     /* Inverted Text/Accent/Border Colors */
     --color-text-primary: #f0f0f0; /* Light text */

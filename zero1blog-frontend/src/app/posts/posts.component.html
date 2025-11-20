@@ -1,9 +1,27 @@
-<!-- <button (click)="fetchPosts()">get posts</button> -->
 <div class="postsContainer">
   @for (post of posts(); track post.id; let i = $index) {
   <div class="post">
-    <h2>{{ post.nickname }}</h2>
-    <span class="bars"><i class="fa-solid fa-bars"></i> </span>
+    <h2 class="userNickname">
+      {{ post.nickname }}
+      <i (click)="toggle(i)" class="fa-solid fa-bars"></i>
+    </h2>
+
+    @if (targetedPost == i) {
+    <div class="actionMenu">
+      <ul class="opptions">
+        @if (post.postOwner) {
+        <li><i class="fa-regular fa-pen-to-square"></i> edit</li>
+        <li><i class="fa-regular fa-trash-can"></i> remove</li>
+        } @else {
+        <li (click)="reportForm = true">
+          <i class="fa-regular fa-flag"></i> report
+        </li>
+        } @if (reportForm) {
+        <app-report [postId]="post.id"></app-report>
+        }
+      </ul>
+    </div>
+    }
     <p class="date">{{ formatDate(post.created_at) }}</p>
     <div>
       <p>{{ post.content }}</p>

@@ -1,0 +1,29 @@
+.layout {
+  position: fixed;
+  top: 110px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  background-color: var(--color-post);
+  z-index: 10000;
+  /* display: flex; */
+  /* justify-content: center; */
+  width: 100%;
+}
+
+.formContainer {
+  width: 90%;
+  display: flex;
+  justify-content: center;
+}
+
+.reportForm {
+  margin-top: 90px;
+  display: flex;
+  flex-direction: column;
+}
+
+.reportReason {
+  /* width: 90%; */
+}

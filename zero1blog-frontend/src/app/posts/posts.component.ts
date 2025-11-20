@@ -2,10 +2,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, HostListener, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { OffsetLimitService } from '../services/offset-limit.service';
+import { ReportComponent } from '../report/report.component';
 
 @Component({
   selector: 'app-posts',
-  imports: [],
+  imports: [ReportComponent],
   templateUrl: './posts.component.html',
   styleUrl: './posts.component.css',
 })
@@ -15,12 +16,12 @@ export class PostsComponent implements OnInit {
   isLoading = false;
   posts = signal<any>([]);
   prevScrollPosition = window.pageYOffset;
-
+  targetedPost = -1;
+  reportForm = false;
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
-    console.log('befor fetching', this.offsetService.getOffset());
-
+    console.log('before fetching', this.offsetService.getOffset());
     this.fetchPosts();
   }
 
@@ -145,4 +146,13 @@ export class PostsComponent implements OnInit {
 
     return `${Math.floor(duration)} s ago`;
   }
+
+  toggle(index: number) {
+    console.log(index);
+    if (index == this.targetedPost) this.targetedPost = -1;
+    else this.targetedPost = index;
+  }
+  // showReportForm(postId: number) {
+  //   console.log('post id', postId);
+  // }
 }

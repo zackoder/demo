@@ -1,0 +1,17 @@
+<div class="layout">
+  <div class="formContainer">
+    <form (ngSubmit)="onsubmitReport()" class="reportForm">
+      <label for="reportReason"
+        >what is the reason you are reporting the port for:
+      </label>
+      <textarea
+        [(ngModel)]="reportReason"
+        name="reportReason"
+        id="reportReason"
+        class="reportReason"
+      ></textarea>
+      <p class="error">{{ error }}</p>
+      <button type="submit">report</button>
+    </form>
+  </div>
+</div>

@@ -14,7 +14,7 @@ import com.zack.demo.config.JwtService;
 
 @RestController
 @RequestMapping("/api")
-public class ReactionControler {
+public class ReactionController {
 
     @Autowired
     private ReactionService reactionService;
