@@ -66,7 +66,7 @@ public class PostService {
         if (user == null) {
             return null;
         }
-        return postRepo.findPostsByOffsetAndLimit(user.getId(), offset);
+        return postRepo.findPostsByOffsetAndLimit(user.getId(), user.getId(), offset);
     }
 
     private String uploadFile(MultipartFile file) {

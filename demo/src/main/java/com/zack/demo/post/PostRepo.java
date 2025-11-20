@@ -24,6 +24,7 @@ public interface PostRepo extends JpaRepository<Post, Long> {
                 u.nickname,
                 SUM(CASE WHEN r.reaction_type = 'like' THEN 1 ELSE 0 END) AS likes,
                 SUM(CASE WHEN r.reaction_type = 'dislike' THEN 1 ELSE 0 END) AS dislikes,
+                CASE WHEN r.user_id = ? AND p.id = r.post_id IS NOT NULL THEN r.reaction_type ELSE '' END AS reacted,
                 CASE WHEN p.user_id = ? THEN true ELSE false END AS post_owner
             FROM
                 posts p
@@ -32,10 +33,10 @@ public interface PostRepo extends JpaRepository<Post, Long> {
             LEFT JOIN
                 reactions r ON p.id = r.post_id
             GROUP BY
-                p.id, p.content, p.image_path, p.user_id, p.visibility, p.created_at, u.nickname
+                p.id, p.content, p.image_path, p.user_id, p.visibility, p.created_at, u.nickname, r.user_id, r.post_id, r.reaction_type
             ORDER BY
                 p.created_at DESC -- Added for consistent pagination
             LIMIT 10 OFFSET ?;
             """, nativeQuery = true)
-    List<GetPostDto> findPostsByOffsetAndLimit(long id, int offset);
+    List<GetPostDto> findPostsByOffsetAndLimit(long id, long id, int offset);
 }

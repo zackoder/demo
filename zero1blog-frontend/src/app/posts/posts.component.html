@@ -41,9 +41,13 @@
     </div>
     <div>
       <button (click)="reaction(post.id, 'like', i)">Like</button>
-      <span>{{ post.likes }}</span>
+      <span class="{{ post.reacted == 'like' ? like : '' }}">{{
+        post.likes
+      }}</span>
       <button (click)="reaction(post.id, 'dislike', i)">Dislike</button>
-      <span> {{ post.dislikes }} </span>
+      <span class="{{ post.reacted == 'dislike' ? dislike : '' }}">
+        {{ post.dislikes }}
+      </span>
       <button (click)="showComments(post.id)">Comments</button>
       <span>00</span>
     </div>

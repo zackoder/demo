@@ -3,6 +3,7 @@ import { Component, HostListener, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { OffsetLimitService } from '../services/offset-limit.service';
 import { ReportComponent } from '../report/report.component';
+import { environment } from '../../environments/environment.prod';
 
 @Component({
   selector: 'app-posts',
@@ -11,6 +12,7 @@ import { ReportComponent } from '../report/report.component';
   styleUrl: './posts.component.css',
 })
 export class PostsComponent implements OnInit {
+  private baseUrl = environment.apiUrl;
   nothingToFetch = false;
   offsetService = new OffsetLimitService();
   isLoading = false;
@@ -54,7 +56,7 @@ export class PostsComponent implements OnInit {
       Authorization: `Bearer ${token}`,
     });
     this.http
-      .get<any[]>(`http://localhost:8080/api/getPosts?offset=${offset}`, {
+      .get<any[]>(`${this.baseUrl}/getPosts?offset=${offset}`, {
         headers,
       })
       .subscribe({
@@ -96,7 +98,7 @@ export class PostsComponent implements OnInit {
 
     this.http
       .post(
-        `http://localhost:8080/api/reaction`,
+        `${this.baseUrl}/reaction`,
         { target: 'post', targetId: postId, reactionType: reaction },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -152,7 +154,4 @@ export class PostsComponent implements OnInit {
     if (index == this.targetedPost) this.targetedPost = -1;
     else this.targetedPost = index;
   }
-  // showReportForm(postId: number) {
-  //   console.log('post id', postId);
-  // }
 }

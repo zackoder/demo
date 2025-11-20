@@ -26,7 +26,7 @@ public class ReactionController {
     public ResponseEntity<?> handleReaction(@RequestBody ReactionDto dtoReq,
             @RequestHeader(value = "authorization", required = false) String auth) {
 
-        HashMap<String, String> resp = new HashMap<>();
+        HashMap<Object, Object> resp = new HashMap<>();
         if (auth == null || auth.isEmpty() || !auth.startsWith("Bearer")) {
             resp.put("error", "unauthorized");
             return ResponseEntity.status(403).body(resp);
@@ -36,8 +36,14 @@ public class ReactionController {
             resp.put("error", "invalid data");
             return ResponseEntity.badRequest().body(resp);
         }
-        reactionService.seveReaction(nickname);
-        resp.put("message", "nothing");
-        return ResponseEntity.ok().body(resp);
+        resp = reactionService.seveReaction(dtoReq, nickname);
+        if (resp.get("error") != null) {
+            return ResponseEntity.status(404).body(resp);
+        }
+        System.out.println(resp.toString());
+
+        ReactionRespDto res = reactionService.getNewReactions(1, dtoReq.getTargetId());
+        // resp.put("message", "nothing");
+        return ResponseEntity.ok().body(res);
     }
 }

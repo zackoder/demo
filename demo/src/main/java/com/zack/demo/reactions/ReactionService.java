@@ -12,15 +12,8 @@ import com.zack.demo.post.PostRepo;
 import com.zack.demo.user.User;
 import com.zack.demo.user.UserRepository;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
 @Service
 public class ReactionService {
-    private ReactionDto dto;
-
     @Autowired
     private PostRepo post;
 
@@ -51,28 +44,28 @@ public class ReactionService {
             // here i should hadle the case of the comment reaction
         }
 
-        this.dto = dto;
         return true;
     }
 
-    public HashMap<?, ?> seveReaction(String nickname) {
-        HashMap<String, String> ret = new HashMap<>();
+    public HashMap<Object, Object> seveReaction(ReactionDto dto, String nickname) {
+        HashMap<Object, Object> ret = new HashMap<>();
         Optional<User> userOptional = user.findByNickname(nickname);
-        if (userOptional.isEmpty()) {
+        if (userOptional == null || userOptional.isEmpty()) {
             ret.put("error", "User not found");
             return ret;
         }
         User reacter = userOptional.get();
         // here i should check if the who reacted following the poster
-        Optional<Reactions> reactionOptional = reactionRepo.findByPostIdAndUserId(this.dto.getTargetId(),
+        Optional<Reactions> reactionOptional = reactionRepo.findByPostIdAndUserId(dto.getTargetId(),
                 reacter.getId());
         if (reactionOptional.isEmpty()) {
             Reactions reaction = new Reactions();
             reaction.setCreatedAt(new Date().getTime() / 1000);
-            reaction.setPostId(this.dto.getTargetId());
+            reaction.setPostId(dto.getTargetId());
             reaction.setUserId(reacter.getId());
             reaction.setReaction_type(dto.getReactionType());
             reactionRepo.save(reaction);
+            ret.put("userId", reacter.getId());
             return ret;
         } else {
             Reactions reaction = reactionOptional.get();
@@ -80,11 +73,17 @@ public class ReactionService {
                 reactionRepo.delete(reaction);
             } else {
                 reaction.setReaction_type(dto.getReactionType());
-                reactionRepo.save(reaction);
+                var test = reactionRepo.save(reaction);
+                System.out.println(test);
+                ret.put("userId", reacter.getId());
             }
         }
 
         // System.out.println(reaction.getReaction());
         return ret;
+    }
+
+    public ReactionRespDto getNewReactions(long userId, long postId) {
+        return reactionRepo.getNewReactions(postId, userId, postId);
     }
 }
