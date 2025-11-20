@@ -3,10 +3,8 @@ package com.zack.demo.Reprts;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.zack.demo.post.Post;
 import com.zack.demo.post.PostRepo;
 import com.zack.demo.user.User;
 import com.zack.demo.user.UserRepository;
@@ -15,27 +13,40 @@ import com.zack.demo.user.UserRepository;
 public class ReportService {
     @Autowired
     UserRepository userRepo;
+    
     @Autowired
     PostRepo postRepo;
 
-    public ResponseEntity<?> checkReportData(String nickname, ReportDto dto) {
+    @Autowired
+    ReportRepo reportRepo;
+
+    public HashMap<String, Object> checkReportData(String nickname, ReportDto dto) {
 
         HashMap<String, Object> resp = new HashMap<>();
 
-        boolean userExists = userRepo.existsByNickname(nickname);
+        User reporter = userRepo.findByNickname(nickname).get();
 
-        if (!userExists) {
+        if (reporter == null) {
             resp.put("error", "User Not found");
-            return ResponseEntity.status(404).body(resp);
+            return resp;
         }
 
         boolean postExists = postRepo.existsById(dto.getTargetId());
 
         if (!postExists) {
             resp.put("error", "Post Does not exists");
-            return ResponseEntity.status(404).body(resp);
+            return resp;
         }
+        resp.put("userId", reporter.getId());
+        return resp;
+    }
 
-        return null;
+    public void saveReport(ReportDto dto, long reporterId) {
+        // Reports newReport = new Reports();
+        // newReport.setPostId(dto.getTargetId());
+        // newReport.setContent(dto.getContent());
+        // newReport.setCreated_at(new Date().getTime() / 1000);
+        // newReport.setUserId(reporterId);
+        // reportRepo.save(newReport);
     }
 }

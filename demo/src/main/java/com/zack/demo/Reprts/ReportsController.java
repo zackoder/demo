@@ -23,6 +23,7 @@ public class ReportsController {
     @PostMapping("/report")
     public ResponseEntity<?> reportsController(@RequestBody ReportDto dto,
             @RequestHeader("authorization") String auth) {
+
         HashMap<String, Object> resp = new HashMap<>();
         if (auth.isEmpty() || !auth.startsWith("Bearer")) {
             resp.put("error", "Unauthorized");
@@ -30,11 +31,13 @@ public class ReportsController {
         }
 
         String nickname = jwt.extractUsername(auth.substring(7));
-        ResponseEntity<?> reportStat = reportService.checkReportData(nickname, dto);
+        HashMap<String, Object> reportStat = reportService.checkReportData(nickname, dto);
 
-        if (reportStat != null) {
-            return reportStat;
+        if (reportStat.get("error") != null) {
+            return ResponseEntity.status(404).body(reportStat);
         }
+
+        reportService.saveReport(dto, (long) reportStat.get("userId"));
         resp.put("message", "success");
         return ResponseEntity.ok(resp);
     }
