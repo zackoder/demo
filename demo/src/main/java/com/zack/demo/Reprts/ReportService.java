@@ -1,5 +1,6 @@
 package com.zack.demo.Reprts;
 
+import java.util.Date;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import com.zack.demo.user.UserRepository;
 public class ReportService {
     @Autowired
     UserRepository userRepo;
-    
+
     @Autowired
     PostRepo postRepo;
 
@@ -42,11 +43,11 @@ public class ReportService {
     }
 
     public void saveReport(ReportDto dto, long reporterId) {
-        // Reports newReport = new Reports();
-        // newReport.setPostId(dto.getTargetId());
-        // newReport.setContent(dto.getContent());
-        // newReport.setCreated_at(new Date().getTime() / 1000);
-        // newReport.setUserId(reporterId);
-        // reportRepo.save(newReport);
+        Reports newReport = new Reports();
+        newReport.setPostId(dto.getTargetId());
+        newReport.setContent(dto.getContent());
+        newReport.setCreated_at(new Date().getTime() / 1000);
+        newReport.setUserId(reporterId);
+        reportRepo.save(newReport);
     }
 }
