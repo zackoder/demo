@@ -1,5 +1,6 @@
 <div class="layout">
   <div class="formContainer">
+    <button (click)="closeReport()" class="closeReport">X</button>
     <form (ngSubmit)="onsubmitReport()" class="reportForm">
       <label for="reportReason"
         >what is the reason you are reporting the port for:
@@ -10,7 +11,9 @@
         id="reportReason"
         class="reportReason"
       ></textarea>
+      @if (error) {
       <p class="error">{{ error }}</p>
+      }
       <button type="submit">report</button>
     </form>
   </div>

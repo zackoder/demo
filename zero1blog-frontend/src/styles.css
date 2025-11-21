@@ -1,4 +1,6 @@
 /* --- 1. GLOBAL RESET & BASE STYLES --- */
+html,
+body,
 *,
 *::before,
 *::after {
@@ -19,18 +21,18 @@
   --color-border: #e0e0e0; /* Light Gray Separator */
 
   /* Typography Settings */
-  --font-serif: "Merriweather", Georgia, serif; 
+  --font-serif: "Merriweather", Georgia, serif;
   --font-sans: "Inter", Helvetica, Arial, sans-serif;
   --content-width: 700px;
 }
 
 body {
   font-family: var(--font-sans);
-  font-size: 18px; 
-  line-height: 1.6; 
+  font-size: 18px;
+  line-height: 1.6;
   color: var(--color-text-primary); /* Use Primary Text Color */
   background-color: var(--color-bg); /* Use BG Color */
-  padding: 0 1rem; 
+  padding: 0 1rem;
   min-height: 100vh;
 }
 
@@ -44,7 +46,7 @@ h6 {
   font-family: var(--font-sans);
   font-weight: 700;
   line-height: 1.2;
-  margin-top: 2.5rem; 
+  margin-top: 2.5rem;
   margin-bottom: 1rem;
 }
 
@@ -66,7 +68,7 @@ p {
 a {
   color: var(--color-text-primary); /* Default link color is primary text */
   text-decoration: none;
-  border-bottom: 1px solid transparent; 
+  border-bottom: 1px solid transparent;
   transition: color 0.3s, border-bottom 0.3s;
 }
 
@@ -89,7 +91,7 @@ a:hover {
 .post-list-item {
   margin-bottom: 3rem;
   padding: 2rem; /* Added padding to match card style */
-  border-bottom: 1px solid var(--color-border); 
+  border-bottom: 1px solid var(--color-border);
   background-color: var(--color-surface); /* Use Surface Color */
 }
 

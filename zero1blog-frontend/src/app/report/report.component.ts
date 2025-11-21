@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment.prod';
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-report',
@@ -15,6 +15,7 @@ export class ReportComponent {
   reportReason = '';
   error = '';
   @Input() postId!: number;
+  @Output() removeReportComponent = new EventEmitter<boolean>();
   private baseUrl = environment.apiUrl;
   constructor(private http: HttpClient, private router: Router) {}
   onsubmitReport() {
@@ -28,8 +29,6 @@ export class ReportComponent {
     }
 
     this.error = '';
-    console.log(this.postId);
-    console.log(this.baseUrl);
 
     this.http
       .post(
@@ -44,6 +43,7 @@ export class ReportComponent {
       )
       .subscribe({
         next: (res) => {
+          this.error = '';
           console.log(res);
         },
         error: (e) => {
@@ -51,4 +51,8 @@ export class ReportComponent {
         },
       });
   }
+  closeReport() {
+    this.removeReportComponent.emit(false);
+  }
 }
+

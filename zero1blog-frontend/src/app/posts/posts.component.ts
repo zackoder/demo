@@ -3,6 +3,8 @@ import { Component, HostListener, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { OffsetLimitService } from '../services/offset-limit.service';
 import { ReportComponent } from '../report/report.component';
+import { environment } from '../../environments/environment.prod';
+import { error } from 'node:console';
 
 @Component({
   selector: 'app-posts',
@@ -11,6 +13,7 @@ import { ReportComponent } from '../report/report.component';
   styleUrl: './posts.component.css',
 })
 export class PostsComponent implements OnInit {
+  private baseUrl = environment.apiUrl;
   nothingToFetch = false;
   offsetService = new OffsetLimitService();
   isLoading = false;
@@ -18,6 +21,8 @@ export class PostsComponent implements OnInit {
   prevScrollPosition = window.pageYOffset;
   targetedPost = -1;
   reportForm = false;
+  deleteChecker = false;
+
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
@@ -54,7 +59,7 @@ export class PostsComponent implements OnInit {
       Authorization: `Bearer ${token}`,
     });
     this.http
-      .get<any[]>(`http://localhost:8080/api/getPosts?offset=${offset}`, {
+      .get<any[]>(`${this.baseUrl}/getPosts?offset=${offset}`, {
         headers,
       })
       .subscribe({
@@ -148,11 +153,46 @@ export class PostsComponent implements OnInit {
   }
 
   toggle(index: number) {
-    console.log(index);
+    console.log(this.reportForm);
     if (index == this.targetedPost) this.targetedPost = -1;
     else this.targetedPost = index;
   }
   // showReportForm(postId: number) {
   //   console.log('post id', postId);
   // }
+
+  closeReport(event: any) {
+    if (typeof event !== 'boolean') return;
+    this.reportForm = event;
+  }
+
+  delete(index: number) {
+    const jwt = localStorage.getItem('jwtToken');
+    if (!jwt) {
+      this.router.navigate(['/login']);
+      return;
+    }
+    const postId: number = this.posts()[index].id;
+    this.http
+      .delete<any>(`${this.baseUrl}/deletePost/${postId}`, {
+        headers: { Authorization: `Bearer ${jwt}` },
+      })
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+
+          if (res.message === 'post deleted') {
+            this.posts.update((current: []) => {
+              const newPosts = [...current];
+              newPosts.splice(index, 1);
+              return [newPosts];
+            });
+            this.reportForm = false;
+          }
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
 }

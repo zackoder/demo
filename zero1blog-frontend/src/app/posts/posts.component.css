@@ -67,6 +67,20 @@ i {
   /* Hide it by default if using CSS hide/show (e.g., opacity: 0; visibility: hidden;) */
 }
 
+.layout {
+  position: fixed;
+  top: 110px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  background-color: var(--color-post);
+  z-index: 10000;
+  /* display: flex; */
+  /* justify-content: center; */
+  width: 100%;
+}
+
 /* Adjust shadow for better visibility in Dark Mode */
 @media (prefers-color-scheme: dark) {
   .actionMenu {

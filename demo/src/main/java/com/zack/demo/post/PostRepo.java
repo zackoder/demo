@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 public interface PostRepo extends JpaRepository<Post, Long> {
     Optional<Post> findById(Long id);
 
+    boolean existsByIdAndUserNickname(Long id, String nickname);
+
     boolean existsById(Long id);
 
     @Query(value = """

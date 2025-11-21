@@ -11,13 +11,25 @@
       <ul class="opptions">
         @if (post.postOwner) {
         <li><i class="fa-regular fa-pen-to-square"></i> edit</li>
-        <li><i class="fa-regular fa-trash-can"></i> remove</li>
+        <li (click)="deleteChecker = true">
+          <i class="fa-regular fa-trash-can"></i>
+          delete
+        </li>
         } @else {
         <li (click)="reportForm = true">
           <i class="fa-regular fa-flag"></i> report
         </li>
         } @if (reportForm) {
-        <app-report [postId]="post.id"></app-report>
+        <app-report
+          (removeReportComponent)="closeReport($event)"
+          [postId]="post.id"
+        ></app-report>
+        } @if (deleteChecker) {
+        <div class="layout">
+          <div>are you sure you want to delete this post?</div>
+          <button (click)="deleteChecker = false">cancel</button>
+          <button (click)="delete(i)">delete</button>
+        </div>
         }
       </ul>
     </div>
@@ -25,19 +37,21 @@
     <p class="date">{{ formatDate(post.created_at) }}</p>
     <div>
       <p>{{ post.content }}</p>
+      @if (post.image_path) {
       <div class="fileContainer">
-        @if (post.image_path && post.image_path.startsWith("image")) {
+        @if (post.image_path.startsWith("image")) {
         <img
           [src]="`http://localhost:8080/uploads/${post.image_path}`"
           alt="Post Image"
         />
-        } @if (post.image_path && post.image_path.startsWith("videos")) {
+        } @if (post.image_path.startsWith("videos")) {
         <video
           [src]="`http://localhost:8080/uploads/${post.image_path}`"
           controls
         ></video>
         }
       </div>
+      }
     </div>
     <div>
       <button (click)="reaction(post.id, 'like', i)">Like</button>

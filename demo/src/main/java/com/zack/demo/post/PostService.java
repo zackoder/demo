@@ -53,7 +53,7 @@ public class PostService {
 
         post.setContent(content);
         post.setImagePath(filePath);
-        post.setUserId(user.getId());
+        post.setUser(user);
         post.setVisibility(true);
         post.setCreated_at(new Date().getTime() / 1000);
         System.out.println(post.toString());
@@ -112,5 +112,22 @@ public class PostService {
 
     private void removeFile(String path) {
 
+    }
+
+    public boolean checkUser(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
+
+    public boolean checkPost(long id) {
+        return postRepo.existsById(id);
+    }
+
+    public boolean checkouner(long id, String nickname) {
+        return postRepo.existsByIdAndUserNickname(id, nickname);
+        // return false;
+    }
+
+    public void deletePost(long id) {
+        postRepo.deleteById(id);
     }
 }
