@@ -53,9 +53,14 @@ public class PostController {
             String nickname = jwtService.extractUsername(jwt);
             System.out.println("Extracted nickname: " + nickname);
 
-            postService.savePost(content, nickname, file);
+            HashMap<String, ?> savingPost = postService.savePost(content, nickname, file);
 
-            return ResponseEntity.ok("good");
+            if (savingPost.get("error") != null) {
+                // return ResponseEntity.
+            }
+            System.out.println(savingPost.get("postId"));
+            List<GetPostDto> newPost = postService.getNewPost(savingPost.get("postId"));
+            return ResponseEntity.ok(newPost);
         } catch (Exception e) {
             System.err.println("Error details: " + e.getMessage());
             System.err.println("content: " + content);

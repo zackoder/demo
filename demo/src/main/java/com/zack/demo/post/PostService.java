@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.tika.Tika;
@@ -24,30 +25,27 @@ public class PostService {
     @Autowired
     private UserRepository userRepository;
 
-    public String savePost(String content, String userNickname, MultipartFile file) {
+    public HashMap<String, ?> savePost(String content, String userNickname, MultipartFile file) {
         Post post = new Post();
         String filePath = "";
+
+        HashMap<String, Object> res = new HashMap<>();
 
         User user = userRepository.findByNickname(userNickname).get();
         if (user == null) {
             removeFile(filePath);
-            return "user not found";
+            res.put("error", "user not found");
+            return res;
         }
 
         if (file != null) {
             filePath = uploadFile(file);
 
-            if (!filePath.startsWith("images/") && !filePath.startsWith("videos/")) {
-                System.out.println("file to add " + filePath);
-                return filePath;
-            }
-
-            System.out.println("file to add " + filePath);
-
             String message = storeFile(filePath, file);
 
             if (!message.equals("successfully")) {
-                return message;
+                res.put("error", "couldn't store the file please try again");
+                return res;
             }
         }
 
@@ -57,8 +55,11 @@ public class PostService {
         post.setVisibility(true);
         post.setCreated_at(new Date().getTime() / 1000);
         System.out.println(post.toString());
-        postRepo.save(post);
-        return "successfully";
+        Post newPost = postRepo.save(post);
+        System.out.println(newPost);
+        res.put("message", "successfully");
+        res.put("postId", newPost.getId());
+        return res;
     }
 
     public List<GetPostDto> getPosts(int offset, String nickname) {
@@ -66,7 +67,7 @@ public class PostService {
         if (user == null) {
             return null;
         }
-        return postRepo.findPostsByOffsetAndLimit(user.getId(), offset);
+        return postRepo.findPostsByOffsetAndLimit(user.getId(), 10, offset);
     }
 
     private String uploadFile(MultipartFile file) {
@@ -129,5 +130,9 @@ public class PostService {
 
     public void deletePost(long id) {
         postRepo.deleteById(id);
+    }
+
+    public List<GetPostDto> getNewPost(Object postId) {
+        return postRepo.findPostsByOffsetAndLimit(1, 1, (long) postId);
     }
 }

@@ -197,8 +197,4 @@ export class PostsComponent implements OnInit {
         },
       });
   }
-
-  setReportForm(newVal: boolean) {
-    this.reportForm = newVal;
-  }
 }
