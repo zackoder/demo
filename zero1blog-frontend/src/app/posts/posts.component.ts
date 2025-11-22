@@ -72,6 +72,7 @@ export class PostsComponent implements OnInit {
           }
           this.posts.update((current) => [...current, ...data]);
           this.isLoading = false;
+          this.targetedPost = -1;
           this.offsetService.setOffset(this.posts().length);
         },
         error: (err) => {
@@ -95,7 +96,7 @@ export class PostsComponent implements OnInit {
       return;
     }
     if (!postId) {
-      alert("id desn't exists");
+      alert("id doesn't exists");
       return;
     }
 
@@ -109,9 +110,7 @@ export class PostsComponent implements OnInit {
       )
       .subscribe({
         next: (res) => {
-          console.log('index', this.posts()[index].likes);
           this.posts()[index].likes += 1;
-          console.log('index', this.posts()[index].likes);
         },
         error: (e) => {
           console.log('reacting to post error :', e);
@@ -185,14 +184,21 @@ export class PostsComponent implements OnInit {
             this.posts.update((current: []) => {
               const newPosts = [...current];
               newPosts.splice(index, 1);
-              return [newPosts];
+              return [...newPosts];
             });
-            this.reportForm = false;
+            console.log('before', this.deleteChecker);
+            this.deleteChecker = false;
+            this.targetedPost = -1;
+            console.log('after', this.deleteChecker);
           }
         },
         error: (err) => {
           console.log(err);
         },
       });
+  }
+
+  setReportForm(newVal: boolean) {
+    this.reportForm = newVal;
   }
 }
