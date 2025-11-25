@@ -1,5 +1,5 @@
 <div class="postsContainer">
-  @for (post of posts(); track post.id; let i = $index) {
+  @for (post of postsService.getPosts(); track post.id; let i = $index) {
   <div class="post">
     <h2 class="userNickname">
       {{ post.nickname }}

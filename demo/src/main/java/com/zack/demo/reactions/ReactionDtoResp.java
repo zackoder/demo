@@ -1,10 +1,15 @@
 package com.zack.demo.reactions;
 
+import com.beust.jcommander.internal.Nullable;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class ReactionDtoResp {
-    private int likes;
-    private int dislikes;
-    private int Comments;
+    private long likes;
+    private long dislikes;
+    @Nullable
+    private Boolean reacted;
 }

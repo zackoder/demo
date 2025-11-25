@@ -36,7 +36,7 @@ public interface PostRepo extends JpaRepository<Post, Long> {
             GROUP BY
                 p.id, p.content, p.image_path, p.user_id, p.visibility, p.created_at, u.nickname
             ORDER BY
-                p.created_at DESC -- Added for consistent pagination
+                p.created_at DESC
             LIMIT ? OFFSET ?;
             """, nativeQuery = true)
     List<GetPostDto> findPostsByOffsetAndLimit(long id, long limit, long offset);

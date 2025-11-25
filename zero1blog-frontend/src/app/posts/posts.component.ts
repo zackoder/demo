@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { OffsetLimitService } from '../services/offset-limit.service';
 import { ReportComponent } from '../report/report.component';
 import { environment } from '../../environments/environment.prod';
-import { error } from 'node:console';
+import { PostsService } from '../services/posts.service';
 
 @Component({
   selector: 'app-posts',
@@ -15,15 +15,18 @@ import { error } from 'node:console';
 export class PostsComponent implements OnInit {
   private baseUrl = environment.apiUrl;
   nothingToFetch = false;
-  offsetService = new OffsetLimitService();
   isLoading = false;
-  posts = signal<any>([]);
   prevScrollPosition = window.pageYOffset;
   targetedPost = -1;
   reportForm = false;
   deleteChecker = false;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private offsetService: OffsetLimitService,
+    public postsService: PostsService
+  ) {}
 
   ngOnInit(): void {
     console.log('before fetching', this.offsetService.getOffset());
@@ -70,10 +73,11 @@ export class PostsComponent implements OnInit {
             data = [];
             this.nothingToFetch = true;
           }
-          this.posts.update((current) => [...current, ...data]);
+          this.postsService.setPosts(data);
+
           this.isLoading = false;
           this.targetedPost = -1;
-          this.offsetService.setOffset(this.posts().length);
+          this.offsetService.setOffset(this.postsService.getPosts().length);
         },
         error: (err) => {
           if (err.status) {
@@ -102,7 +106,7 @@ export class PostsComponent implements OnInit {
 
     this.http
       .post(
-        `http://localhost:8080/api/reaction`,
+        `${this.baseUrl}/reaction`,
         { target: 'post', targetId: postId, reactionType: reaction },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -110,7 +114,8 @@ export class PostsComponent implements OnInit {
       )
       .subscribe({
         next: (res) => {
-          this.posts()[index].likes += 1;
+          const targetedPost = this.postsService.getPosts()[index];
+          console.log(targetedPost);
         },
         error: (e) => {
           console.log('reacting to post error :', e);
@@ -171,7 +176,8 @@ export class PostsComponent implements OnInit {
       this.router.navigate(['/login']);
       return;
     }
-    const postId: number = this.posts()[index].id;
+    const postId = this.postsService.getPosts()[index].id;
+
     this.http
       .delete<any>(`${this.baseUrl}/deletePost/${postId}`, {
         headers: { Authorization: `Bearer ${jwt}` },
@@ -179,17 +185,11 @@ export class PostsComponent implements OnInit {
       .subscribe({
         next: (res) => {
           console.log(res);
-
           if (res.message === 'post deleted') {
-            this.posts.update((current: []) => {
-              const newPosts = [...current];
-              newPosts.splice(index, 1);
-              return [...newPosts];
-            });
-            console.log('before', this.deleteChecker);
+            this.postsService.deletePost(index);
+            // this.postsService.setPosts(res);
             this.deleteChecker = false;
             this.targetedPost = -1;
-            console.log('after', this.deleteChecker);
           }
         },
         error: (err) => {

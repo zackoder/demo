@@ -4,6 +4,8 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { OffsetLimitService } from '../services/offset-limit.service'; // Assuming this service exists
+import { environment } from '../../environments/environment.prod';
+import { PostsService } from '../services/posts.service';
 
 @Component({
   selector: 'app-add-post',
@@ -14,10 +16,18 @@ import { OffsetLimitService } from '../services/offset-limit.service'; // Assumi
 export class AddPostComponent {
   content: string = '';
   selectedFile: File | null = null;
+  private baseUrl = environment.apiUrl;
 
-  OffsetService = new OffsetLimitService();
+  // OffsetService = new OffsetLimitService();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  // posts = new PostsService();
+
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private OffsetService: OffsetLimitService,
+    private posts: PostsService
+  ) {}
 
   OnSelectFile(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -48,25 +58,20 @@ export class AddPostComponent {
     }
 
     this.http
-      .post('http://localhost:8080/api/addPost', formData, {
+      .post<[]>(`${this.baseUrl}/addPost`, formData, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .subscribe({
         next: (res) => {
           console.log('Post created successfully:', res);
-
           const priv_offset = this.OffsetService.getOffset();
           this.OffsetService.setOffset(priv_offset + 1);
+          this.posts.addOnePost(res);
+          console.log(this.posts.getPosts());
 
+          // this.posts.setPosts();
           this.content = '';
           this.selectedFile = null;
-
-          const fileInput = document.getElementById(
-            'fileInput'
-          ) as HTMLInputElement;
-          if (fileInput) {
-            fileInput.value = '';
-          }
         },
         error: (err) => console.error('Error during post creation:', err),
       });

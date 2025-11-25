@@ -30,52 +30,41 @@ public class ReactionService {
     @Autowired
     private ReactionRepo reactionRepo;
 
-    // i have to add the comment repo
-    public boolean validateDto(ReactionDto dto) {
-        System.out.println(dto);
+    public HashMap<String, String> validateDto(ReactionDto dto) {
+        HashMap<String, String> res = new HashMap<>();
         if (dto.getReactionType().isEmpty()
                 || (!dto.getReactionType().equals("like") && !dto.getReactionType().equals("dislike"))) {
-            return false;
+            res.put("error", "bad request");
+            return res;
         }
 
-        if (!dto.getTarget().equals("post") && !dto.getTarget().equals("comment")) {
-            return false;
+        Optional<Post> postOption = post.findById(dto.getTargetId());
+        if (postOption.isEmpty()) {
+            res.put("error", "bad request");
+            return res;
         }
-
-        if (dto.getTarget().equals("post")) {
-            Optional<Post> postOption = post.findById(dto.getTargetId());
-            if (postOption.isEmpty()) {
-                return false;
-            }
-        } else {
-            // here i should hadle the case of the comment reaction
-        }
-
         this.dto = dto;
-        return true;
+        return res;
     }
 
-    public HashMap<?, ?> seveReaction(String nickname) {
-        HashMap<String, String> ret = new HashMap<>();
+    public boolean checkUser(String nickname) {
+        return user.existsByNickname(nickname);
+    }
+
+    public void seveReaction(String nickname) {
         Optional<User> userOptional = user.findByNickname(nickname);
-        if (userOptional.isEmpty()) {
-            ret.put("error", "User not found");
-            return ret;
-        }
         User reacter = userOptional.get();
-        // here i should check if the who reacted following the poster
         Optional<Reactions> reactionOptional = reactionRepo.findByPostIdAndUserId(this.dto.getTargetId(),
                 reacter.getId());
+        Reactions reaction = new Reactions();
         if (reactionOptional.isEmpty()) {
-            Reactions reaction = new Reactions();
             reaction.setCreatedAt(new Date().getTime() / 1000);
             reaction.setPostId(this.dto.getTargetId());
             reaction.setUserId(reacter.getId());
             reaction.setReaction_type(dto.getReactionType());
             reactionRepo.save(reaction);
-            return ret;
         } else {
-            Reactions reaction = reactionOptional.get();
+            reaction = reactionOptional.get();
             if (reaction.getReaction_type().equals(dto.getReactionType())) {
                 reactionRepo.delete(reaction);
             } else {
@@ -83,8 +72,10 @@ public class ReactionService {
                 reactionRepo.save(reaction);
             }
         }
+    }
 
-        // System.out.println(reaction.getReaction());
-        return ret;
+    public ReactionDtoResp countReaction(String nickname) {
+        User user = this.user.findByNickname(nickname).get();
+        return reactionRepo.countReaction(user.getId(), dto.getTargetId(), dto.getTargetId());
     }
 }

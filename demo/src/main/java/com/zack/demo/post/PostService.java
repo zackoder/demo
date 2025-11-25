@@ -125,7 +125,6 @@ public class PostService {
 
     public boolean checkouner(long id, String nickname) {
         return postRepo.existsByIdAndUserNickname(id, nickname);
-        // return false;
     }
 
     public void deletePost(long id) {
@@ -133,6 +132,6 @@ public class PostService {
     }
 
     public List<GetPostDto> getNewPost(Object postId) {
-        return postRepo.findPostsByOffsetAndLimit(1, 1, (long) postId);
+        return postRepo.findPostsByOffsetAndLimit(1, 1, 0);
     }
 }

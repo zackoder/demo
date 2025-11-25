@@ -31,13 +31,19 @@ public class ReactionController {
             resp.put("error", "unauthorized");
             return ResponseEntity.status(403).body(resp);
         }
+
         String nickname = jwt.extractUsername(auth.substring(7));
-        if (!reactionService.validateDto(dtoReq)) {
-            resp.put("error", "invalid data");
+        resp = reactionService.validateDto(dtoReq);
+        if (resp.get("error") != null) {
             return ResponseEntity.badRequest().body(resp);
         }
+        if (!reactionService.checkUser(nickname)) {
+            resp.put("error", "user not found");
+            return ResponseEntity.badRequest().body(resp);
+        }
+
         reactionService.seveReaction(nickname);
-        resp.put("message", "nothing");
-        return ResponseEntity.ok().body(resp);
+        var res = reactionService.countReaction(nickname);
+        return ResponseEntity.ok().body(res);
     }
 }
