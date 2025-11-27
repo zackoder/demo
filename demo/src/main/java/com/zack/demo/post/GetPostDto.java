@@ -18,4 +18,5 @@ public class GetPostDto {
     private long likes;
     private long dislikes;
     private boolean postOwner;
+    private String reacted;
 }

@@ -10,6 +10,5 @@ import lombok.Data;
 public class ReactionDtoResp {
     private long likes;
     private long dislikes;
-    @Nullable
-    private Boolean reacted;
+    private String reacted;
 }

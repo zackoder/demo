@@ -76,6 +76,6 @@ public class ReactionService {
 
     public ReactionDtoResp countReaction(String nickname) {
         User user = this.user.findByNickname(nickname).get();
-        return reactionRepo.countReaction(user.getId(), dto.getTargetId(), dto.getTargetId());
+        return reactionRepo.countReaction(user.getId(), dto.getTargetId());
     }
 }

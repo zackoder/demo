@@ -15,16 +15,13 @@ public interface ReactionRepo extends JpaRepository<Reactions, Long> {
             SELECT
                 SUM(CASE WHEN r.reaction_type = 'like' THEN 1 ELSE 0 END) AS likes,
                 SUM(CASE WHEN r.reaction_type = 'dislike' THEN 1 ELSE 0 END) AS dislikes,
-                (
-                    SELECT EXISTS (
-                        SELECT 1 FROM reactions
-                        WHERE post_id = ? AND user_id = ?
-                    )
-                ) AS reacted
+                CASE WHEN r.user_id = ? THEN r.reaction_type ELSE '' END AS reacted
             FROM
                 reactions r
             WHERE
-                r.post_id = ?;
+                r.post_id = ?
+            GROUP BY
+                user_id, r.reaction_type;
                 """, nativeQuery = true)
-    ReactionDtoResp countReaction(long postId, long userId, long postId);
+    ReactionDtoResp countReaction(long userId, long postId);
 }
