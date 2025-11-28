@@ -105,7 +105,7 @@ export class PostsComponent implements OnInit {
     }
 
     this.http
-      .post(
+      .post<any>(
         `${this.baseUrl}/reaction`,
         { target: 'post', targetId: postId, reactionType: reaction },
         {
@@ -115,6 +115,9 @@ export class PostsComponent implements OnInit {
       .subscribe({
         next: (res) => {
           const targetedPost = this.postsService.getPosts()[index];
+          targetedPost.likes = res.likes;
+          targetedPost.likes = res.deslikes;
+
           console.log(targetedPost);
         },
         error: (e) => {

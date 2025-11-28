@@ -131,7 +131,8 @@ public class PostService {
         postRepo.deleteById(id);
     }
 
-    public List<GetPostDto> getNewPost(Object postId) {
-        return postRepo.findPostsByOffsetAndLimit(1, 1, 1, 0);
+    public List<GetPostDto> getNewPost(String nickname) {
+        User user = userRepository.findByNickname(nickname).get();
+        return postRepo.findPostsByOffsetAndLimit(user.getId(), user.getId(), 1, 0);
     }
 }

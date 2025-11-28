@@ -59,7 +59,7 @@ public class PostController {
                 // return ResponseEntity.
             }
             System.out.println(savingPost.get("postId"));
-            List<GetPostDto> newPost = postService.getNewPost(savingPost.get("postId"));
+            List<GetPostDto> newPost = postService.getNewPost(nickname);
             return ResponseEntity.ok(newPost);
         } catch (Exception e) {
             System.err.println("Error details: " + e.getMessage());
