@@ -115,10 +115,15 @@ export class PostsComponent implements OnInit {
       .subscribe({
         next: (res) => {
           const targetedPost = this.postsService.getPosts()[index];
+          if (res == null) {
+            targetedPost.dislikes = 0;
+            targetedPost.likes = 0;
+            targetedPost.reacted = '';
+            return;
+          }
+          targetedPost.dislikes = res.dislikes;
           targetedPost.likes = res.likes;
-          targetedPost.likes = res.deslikes;
-
-          console.log(targetedPost);
+          targetedPost.reacted = res.reacted;
         },
         error: (e) => {
           console.log('reacting to post error :', e);

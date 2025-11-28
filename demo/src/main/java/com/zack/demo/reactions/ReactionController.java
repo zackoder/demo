@@ -37,13 +37,15 @@ public class ReactionController {
         if (resp.get("error") != null) {
             return ResponseEntity.badRequest().body(resp);
         }
+
         if (!reactionService.checkUser(nickname)) {
             resp.put("error", "user not found");
             return ResponseEntity.badRequest().body(resp);
         }
 
         reactionService.seveReaction(nickname);
-        var res = reactionService.countReaction(nickname);
+        ReactionDtoResp res = reactionService.countReaction(nickname);
+        System.out.println(res);
         return ResponseEntity.ok().body(res);
     }
 }

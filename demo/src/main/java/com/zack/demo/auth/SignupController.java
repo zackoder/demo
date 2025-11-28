@@ -15,7 +15,7 @@ public class SignupController {
     private SignupService signupService;
 
     @PostMapping("/register")
-    public ResponseEntity<Map<String, Object>> registerUser(@RequestBody SignupRequestDto signupRequestDto) {
+    public ResponseEntity<?> registerUser(@RequestBody SignupRequestDto signupRequestDto) {
         Map<String, Object> response = new HashMap<>();
 
         String result = signupService.registerUser(signupRequestDto);
