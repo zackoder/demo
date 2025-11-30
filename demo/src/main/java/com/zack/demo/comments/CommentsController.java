@@ -1,6 +1,7 @@
 package com.zack.demo.comments;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -57,9 +58,7 @@ public class CommentsController {
             res.put("error", "Unauthorized");
             return ResponseEntity.badRequest().body(res);
         }
-        
-        res.put("good", "done");
-        res.put("post", id + "");
-        return ResponseEntity.ok().body(res);
+        List<Comments> comments = commentsService.getAllComments(id);
+        return ResponseEntity.ok().body(comments);
     }
 }

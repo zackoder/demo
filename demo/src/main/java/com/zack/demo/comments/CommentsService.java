@@ -1,6 +1,7 @@
 package com.zack.demo.comments;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,5 +59,9 @@ public class CommentsService {
         resDto.setUserId(comment.getUser().getId());
         resDto.setPostId(comment.getPost().getId());
         return resDto;
+    }
+
+    public List<Comments> getAllComments(long id) {
+        return commentsRepo.findAllByPostId(id);
     }
 }

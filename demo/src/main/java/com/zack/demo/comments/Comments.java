@@ -9,10 +9,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Entity
 @Data
+@AllArgsConstructor
 public class Comments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,4 +27,8 @@ public class Comments {
     @JoinColumn(name = "User_id")
     private User user;
     private long createdAt;
+
+    public Comments() {
+
+    }
 }
