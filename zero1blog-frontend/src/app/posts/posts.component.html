@@ -58,7 +58,10 @@
       <span>{{ post.likes }}</span>
       <button (click)="reaction(post.id, 'dislike', i)">Dislike</button>
       <span> {{ post.dislikes }} </span>
-      <button (click)="showComments(post.id)">Comments</button>
+      <button (click)="showTargetedPostId = post.id">Comments</button>
+      @if (showTargetedPostId == post.id) {
+      <app-comments [postId]="post.id"></app-comments>
+      }
       <span>00</span>
     </div>
   </div>

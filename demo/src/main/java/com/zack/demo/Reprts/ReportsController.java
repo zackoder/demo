@@ -25,7 +25,7 @@ public class ReportsController {
             @RequestHeader("authorization") String auth) {
 
         HashMap<String, Object> resp = new HashMap<>();
-        if (auth.isEmpty() || !auth.startsWith("Bearer")) {
+        if (auth.isEmpty() || !auth.startsWith("Bearer ")) {
             resp.put("error", "Unauthorized");
             return ResponseEntity.status(403).body(resp);
         }

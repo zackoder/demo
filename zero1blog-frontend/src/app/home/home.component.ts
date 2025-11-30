@@ -5,7 +5,11 @@ import { NavbarComponent } from '../navbar/navbar.component';
 
 @Component({
   selector: 'app-home',
-  imports: [AddPostComponent, PostsComponent, NavbarComponent],
+  imports: [
+    AddPostComponent,
+    PostsComponent,
+    NavbarComponent
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })

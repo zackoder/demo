@@ -1,4 +1,13 @@
 <div class="commments">
+  <div>
+    @if (error) {
+    <p>{{ error }}</p>
+    }
+    <form (ngSubmit)="onSubmit()">
+      <textarea [(ngModel)]="comment" name="comment-text" id=""></textarea>
+      <button type="submit">submit</button>
+    </form>
+  </div>
   <!-- @for (comment of comments) {
   <div class="comment">
     <div>
@@ -8,7 +17,4 @@
   } @empty {
   <p>theres no comments yet</p>
   } -->
-  <div>
-    <textarea name="comment-text" id=""></textarea>
-  </div>
 </div>

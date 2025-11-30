@@ -1,14 +1,18 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, HostListener, OnInit, signal } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { OffsetLimitService } from '../services/offset-limit.service';
 import { ReportComponent } from '../report/report.component';
 import { environment } from '../../environments/environment.prod';
 import { PostsService } from '../services/posts.service';
+import { CommentsComponent } from '../comments/comments.component';
 
 @Component({
   selector: 'app-posts',
-  imports: [ReportComponent],
+  imports: [
+    ReportComponent,
+    CommentsComponent
+  ],
   templateUrl: './posts.component.html',
   styleUrl: './posts.component.css',
 })
@@ -20,6 +24,8 @@ export class PostsComponent implements OnInit {
   targetedPost = -1;
   reportForm = false;
   deleteChecker = false;
+  // showCommentsComp = false;
+  showTargetedPostId = -1;
 
   constructor(
     private http: HttpClient,
@@ -169,12 +175,8 @@ export class PostsComponent implements OnInit {
     if (index == this.targetedPost) this.targetedPost = -1;
     else this.targetedPost = index;
   }
-  // showReportForm(postId: number) {
-  //   console.log('post id', postId);
-  // }
 
-  closeReport(event: any) {
-    if (typeof event !== 'boolean') return;
+  closeReport(event: boolean) {
     this.reportForm = event;
   }
 

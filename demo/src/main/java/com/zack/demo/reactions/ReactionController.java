@@ -27,7 +27,7 @@ public class ReactionController {
             @RequestHeader(value = "authorization", required = false) String auth) {
 
         HashMap<String, String> resp = new HashMap<>();
-        if (auth == null || auth.isEmpty() || !auth.startsWith("Bearer")) {
+        if (auth == null || auth.isEmpty() || !auth.startsWith("Bearer ")) {
             resp.put("error", "unauthorized");
             return ResponseEntity.status(403).body(resp);
         }
