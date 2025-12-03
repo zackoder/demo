@@ -61,7 +61,19 @@ public class CommentsService {
         return resDto;
     }
 
-    public List<Comments> getAllComments(long id) {
-        return commentsRepo.findAllByPostId(id);
+    public List<CommentsResDto> getAllComments(long id) {
+        List<Comments> comments = commentsRepo.findAllByPostIdOrderByCreatedAtDesc (id);
+        return convetToResDto(comments);
+    }
+
+    public List<CommentsResDto> convetToResDto(List<Comments> comments) {
+        List<CommentsResDto> resDto = comments.stream().map(comment -> new CommentsResDto(
+                comment.getId(),
+                comment.getUser().getId(),
+                comment.getPost().getId(),
+                comment.getContent(),
+                comment.getUser().getNickname(),
+                comment.getCreatedAt())).toList();
+        return resDto;
     }
 }

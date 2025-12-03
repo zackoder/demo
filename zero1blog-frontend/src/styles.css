@@ -10,15 +10,16 @@ body,
 }
 
 /* * DEFAULT LIGHT MODE THEME (Defined in :root)
- * This is the base theme that applies unless the system preference is 'dark'.
+ * Modern palette: Cream backgrounds with sage green and warm accents
  */
 :root {
-  --color-bg: #f5f5f5; /* Soft Off-White Page Background (New Light Base) */
+  --color-bg: #faf8f6; /* Warm Cream Page Background */
   --color-post: #ffffff; /* Pure White Card/Header Background */
-  --color-text-primary: #1a1a1a; /* Very Dark Gray Text */
-  --color-text-secondary: #888888; /* Muted Light Gray Text (Metadata) */
-  --color-accent: #6c8ea4; /* Muted/Soft Blue for links */
-  --color-border: #e0e0e0; /* Light Gray Separator */
+  --color-text-primary: #2d2622; /* Deep Brown Text */
+  --color-text-secondary: #9b9489; /* Warm Taupe Text (Metadata) */
+  --color-accent: #6b9f7f; /* Sage Green for links and accents */
+  --color-border: #e8e3dd; /* Warm Beige Separator */
+  --color-surface: #ffffff; /* Surface color for cards */
 
   /* Typography Settings */
   --font-serif: "Merriweather", Georgia, serif;
@@ -48,6 +49,7 @@ h6 {
   line-height: 1.2;
   margin-top: 2.5rem;
   margin-bottom: 1rem;
+  color: var(--color-text-primary);
 }
 
 h1 {
@@ -73,7 +75,7 @@ a {
 }
 
 a:hover {
-  color: var(--color-accent); /* Accent color on hover */
+  color: var(--color-accent); /* Sage green on hover */
   border-bottom: 1px solid var(--color-accent);
 }
 
@@ -83,26 +85,26 @@ a:hover {
 .container {
   max-width: var(--content-width);
   margin: 0 auto;
-  /* padding-top: 4rem;  */
   padding-bottom: 4rem;
 }
 
 /* Post list items should be clean cards with only essential info */
 .post-list-item {
   margin-bottom: 3rem;
-  padding: 2rem; /* Added padding to match card style */
+  padding: 2rem;
   border-bottom: 1px solid var(--color-border);
-  background-color: var(--color-surface); /* Use Surface Color */
+  background-color: var(--color-surface);
 }
 
 .post-list-item h2 {
   margin-top: 0;
   font-size: 1.8rem;
+  color: var(--color-text-primary);
 }
 
 .post-meta {
   font-size: 0.85rem;
-  color: var(--color-text-secondary); /* Use Secondary Text Color */
+  color: var(--color-text-secondary);
   margin-bottom: 0.5rem;
 }
 
@@ -118,9 +120,9 @@ img {
 /* --- 5. HEADER/NAVIGATION --- */
 .site-header {
   padding: 2rem 0;
-  border-bottom: 1px solid var(--color-border); /* Use Border Color */
+  border-bottom: 1px solid var(--color-border);
   text-align: center;
-  background-color: var(--color-surface); /* Use Surface Color */
+  background-color: var(--color-surface);
 }
 
 .site-title {
@@ -129,6 +131,7 @@ img {
   letter-spacing: 0.05em;
   text-transform: uppercase;
   margin: 0;
+  color: var(--color-text-primary);
 }
 
 .main-nav ul {
@@ -144,6 +147,7 @@ img {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-size: 0.9rem;
+  color: var(--color-text-primary);
 }
 
 /* --- 6. FOOTER --- */
@@ -151,23 +155,24 @@ img {
   padding: 2rem 0;
   text-align: center;
   font-size: 0.8rem;
-  color: var(--color-text-secondary); /* Use Secondary Text Color */
-  border-top: 1px solid var(--color-border); /* Use Border Color */
-  background-color: var(--color-surface); /* Use Surface Color */
+  color: var(--color-text-secondary);
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-surface);
 }
 
 /* --- 7. DARK MODE OVERRIDE (@media prefers-color-scheme) --- */
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Your specified dark background colors */
-    --color-bg: rgb(22, 22, 45); /* Dark background (Page) */
-    --color-post: rgb(55, 60, 112); /* Darker surface (Post/Header) */
+    /* Enhanced dark mode with better contrast and visual hierarchy */
+    --color-bg: #0f0d0b; /* Darker warm background for more contrast */
+    --color-post: #3a342d; /* Lighter warm brown for cards to stand out */
+    --color-surface: #3a342d; /* Surface color for dark mode */
 
-    /* Inverted Text/Accent/Border Colors */
-    --color-text-primary: #f0f0f0; /* Light text */
-    --color-text-secondary: rgb(160, 160, 190); /* Muted Light text */
-    --color-accent: #ffb28c; /* Warm Coral/Orange for links (Better contrast) */
-    --color-border: #333333; /* Darker border */
+    /* Improved text colors for better readability */
+    --color-text-primary: #faf8f6; /* Brighter warm white text */
+    --color-text-secondary: #c9bdb0; /* Lighter muted text for metadata */
+    --color-accent: #b8d9c9; /* Brighter sage green for better visibility */
+    --color-border: #4d453d; /* More visible warm border */
   }
 
   img {
@@ -191,5 +196,11 @@ img {
   }
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

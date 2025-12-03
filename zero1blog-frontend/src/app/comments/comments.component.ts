@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment.prod';
+import { formatDate } from '../utils/dateFormater';
 
 @Component({
   selector: 'app-comments',
@@ -16,7 +17,7 @@ export class CommentsComponent implements OnInit {
   comment: string = '';
   error: string = '';
   isLoading = false;
-  comments = [];
+  comments: any[] = [];
   private baseUrl = environment.apiUrl;
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -34,6 +35,7 @@ export class CommentsComponent implements OnInit {
       .subscribe({
         next: (res) => {
           console.log(res);
+          this.comments = res;
         },
         error: (err) => {
           console.log(err);
@@ -83,5 +85,9 @@ export class CommentsComponent implements OnInit {
           this.isLoading = false;
         },
       });
+  }
+
+  dateFormatter(creationDate: number): string {
+    return formatDate(creationDate);
   }
 }

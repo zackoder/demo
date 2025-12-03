@@ -58,7 +58,7 @@ public class CommentsController {
             res.put("error", "Unauthorized");
             return ResponseEntity.badRequest().body(res);
         }
-        List<Comments> comments = commentsService.getAllComments(id);
+        List<CommentsResDto> comments = commentsService.getAllComments(id);
         return ResponseEntity.ok().body(comments);
     }
 }
