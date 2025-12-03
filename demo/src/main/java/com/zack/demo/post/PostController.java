@@ -3,6 +3,8 @@ package com.zack.demo.post;
 import java.util.HashMap;
 import java.util.List;
 
+import io.jsonwebtoken.Claims;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.zack.demo.config.JwtService;
+
+import io.jsonwebtoken.Claims;
 
 @RestController
 @RequestMapping("/api")
@@ -88,6 +92,8 @@ public class PostController {
             return ResponseEntity.status(403).body(resp);
         }
         System.out.println(postService.checkouner(id, UserNickname));
+        String role = jwtService.extractClaim(jwt.substring(7), claims -> claims.get("role", String.class));
+        System.out.println("role: " + role);
         if (!postService.checkouner(id, UserNickname)) {
 
         }

@@ -29,8 +29,13 @@ public class SignupService {
         user.setPassword(dto.getPassword());
         user.setBio(dto.getBio());
 
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        System.out.println(savedUser.getId());
 
+        if (savedUser.getId() == 1) {
+            savedUser.setRole("admin");
+        }
+        userRepository.save(savedUser);
         return "User registered successfully!";
     }
 }

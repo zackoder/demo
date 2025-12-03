@@ -1,6 +1,7 @@
 #!/bin/bash
 
 CONTAINER_NAME="blog01-db"
+read run="$1"
 
 if [ "$(docker ps -q -f name=^${CONTAINER_NAME}$)" ]; then
   echo "Container '${CONTAINER_NAME}' is already running."

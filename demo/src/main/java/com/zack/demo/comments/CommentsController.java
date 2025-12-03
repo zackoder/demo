@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -60,5 +61,11 @@ public class CommentsController {
         }
         List<CommentsResDto> comments = commentsService.getAllComments(id);
         return ResponseEntity.ok().body(comments);
+    }
+
+    @DeleteMapping("/deleteComment")
+    public ResponseEntity<?> deleteComment(@RequestParam("id") long id, @RequestHeader("authorization") String jwt) {
+        
+        return ResponseEntity.ok().body(null);
     }
 }
