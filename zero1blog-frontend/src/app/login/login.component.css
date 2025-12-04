@@ -1,28 +1,188 @@
+.login-container {
+  max-width: 500px;
+  margin: var(--spacing-2xl) auto;
+  padding: 0 var(--spacing-lg);
+}
+
+.login-card {
+  background: linear-gradient(
+    135deg,
+    var(--color-surface) 0%,
+    var(--color-bg-alt) 100%
+  );
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-2xl);
+  box-shadow: 0 16px 32px rgba(255, 107, 107, 0.15);
+}
+
+.login-title {
+  font-size: var(--fs-3xl);
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+  color: var(--color-accent);
+  letter-spacing: 1px;
+}
+
+.login-subtitle {
+  text-align: center;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-xl);
+  font-size: var(--fs-base);
+}
+
+.form-group {
+  margin-bottom: var(--spacing-lg);
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-sm);
+  font-size: var(--fs-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: var(--spacing-md);
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  transition: border-color var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.08);
+}
+
 .password-requirements {
-  margin-top: 10px;
-  font-size: 14px;
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-md);
+  background-color: var(--color-bg-alt);
+  border-radius: var(--radius-md);
+  font-size: var(--fs-sm);
 }
 
 .password-requirements p {
-  margin: 5px 0;
-  transition: color 0.3s ease;
+  margin: var(--spacing-sm) 0;
+  transition: color var(--transition-base);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.password-requirements p::before {
+  content: "";
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: var(--color-danger);
 }
 
 .password-requirements .valid {
-  color: green;
-  font-weight: bold;
+  color: var(--color-success);
+  font-weight: 600;
+}
+
+.password-requirements .valid::before {
+  background-color: var(--color-success);
 }
 
 .password-requirements .invalid {
-  color: red;
+  color: var(--color-danger);
 }
 
-button:disabled {
+.submit-btn {
+  width: 100%;
+  padding: var(--spacing-lg);
+  background: linear-gradient(
+    135deg,
+    var(--color-accent),
+    var(--color-accent-light)
+  );
+  color: var(--color-text-inverse);
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: var(--fs-base);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.submit-btn:hover:not(:disabled) {
+  box-shadow: 0 12px 24px rgba(255, 107, 107, 0.3);
+  transform: translateY(-3px);
+}
+
+.submit-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-a {
-  position: relative;
-  z-index: 1000;
+.form-footer {
+  text-align: center;
+  margin-top: var(--spacing-lg);
+}
+
+.form-footer p {
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.form-footer a {
+  color: var(--color-accent);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color var(--transition-base);
+}
+
+.form-footer a:hover {
+  color: var(--color-accent-light);
+  text-decoration: underline;
+}
+
+.error-message {
+  background-color: rgba(255, 77, 109, 0.08);
+  color: var(--color-danger);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+  border-left: 3px solid var(--color-danger);
+}
+
+.success-message {
+  background-color: rgba(46, 204, 113, 0.08);
+  color: var(--color-success);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+  border-left: 3px solid var(--color-success);
+}
+
+@media (max-width: 768px) {
+  .login-container {
+    margin: var(--spacing-xl) auto;
+    padding: 0 var(--spacing-md);
+  }
+
+  .login-card {
+    padding: var(--spacing-lg);
+  }
+
+  .login-title {
+    font-size: var(--fs-2xl);
+  }
 }
