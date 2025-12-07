@@ -1,16 +1,15 @@
 .header {
   width: 100%;
-  background: linear-gradient(
-    135deg,
-    var(--color-primary) 0%,
-    var(--color-primary-light) 100%
-  );
-  border-bottom: 2px solid var(--color-accent);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
   position: fixed;
   top: 0;
   left: 0;
+  padding: 0 50px;
+  display: flex;
+  justify-content: space-between;
   z-index: var(--z-fixed);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--elev-2);
 }
 
 .navbar-container {
@@ -167,6 +166,99 @@
   color: var(--color-accent);
   cursor: pointer;
   padding: 0;
+}
+
+.profileLogo {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  position: relative;
+}
+
+.options {
+  list-style: none;
+  position: absolute;
+  background: var(--color-surface);
+  right: 2%;
+  padding: 10px 20px;
+  width: 200px;
+  border: 1px white solid;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  transition: all 0.4s ease-out;
+}
+
+.options-hidden {
+  top: 0;
+  opacity: 0;
+}
+
+.options-visible {
+  top: 100px;
+  opacity: 1;
+}
+
+.options {
+  list-style: none;
+  position: absolute;
+  background: var(--color-surface, #1e1e1e);
+  right: 2%;
+  padding: 10px 20px;
+  width: 200px;
+  border: 1px white solid;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  z-index: 100;
+  color: white;
+  margin: 0;
+
+  transition: top 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    opacity 0.3s ease-in-out;
+}
+
+.options-hidden {
+  top: -20px;
+  opacity: 0;
+}
+
+.options-visible {
+  top: 100px;
+  opacity: 1;
+}
+
+.options li {
+  cursor: pointer;
+  margin-bottom: 15px;
+  width: 100%;
+  position: relative;
+  height: 30px;
+  padding-bottom: 5px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+.options li::after {
+  content: "";
+  width: 0%;
+
+  background: white;
+  height: 1px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  transition: width 0.3s ease-out;
+}
+
+.options li:hover::after {
+  width: 100%;
+}
+
+.options li:hover {
+  color: #007bff;
 }
 
 @media (max-width: 768px) {

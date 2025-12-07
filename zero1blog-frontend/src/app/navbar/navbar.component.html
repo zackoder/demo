@@ -1,3 +1,24 @@
 <header class="header">
-  <h2 class="logo">01blog</h2>
+  <h2 class="logo"><a href="/">01blog</a></h2>
+  <div class="profile">
+    <img
+      (click)="toggle()"
+      class="profileLogo"
+      src="http://localhost:8080/uploads/default-avatar.jpg"
+      alt="default image"
+    />
+    <!-- @if (show) { -->
+    <ul
+      class="options animate"
+      [ngClass]="show ? 'options-visible' : 'options-hidden'"
+      [style.visibility]="show ? 'visible' : 'hidden'"
+    >
+      <li>Profile</li>
+      @if (isAdmin) {
+      <li>Dashboard</li>
+      }
+      <li (click)="logout()">Log Out</li>
+    </ul>
+    <!-- } -->
+  </div>
 </header>

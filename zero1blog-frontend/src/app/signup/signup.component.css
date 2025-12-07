@@ -101,7 +101,7 @@
 .password-requirements p.invalid {
   color: var(--color-danger);
 }
-}
+
 
 .password-requirements .invalid {
   color: var(--color-danger);

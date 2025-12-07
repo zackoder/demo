@@ -1,3 +1,5 @@
+@import '@angular/material/prebuilt-themes/azure-blue.css';
+
 /* --- 1. GLOBAL RESET & BASE STYLES --- */
 html,
 body,
@@ -543,3 +545,6 @@ button.secondary:hover {
     flex-direction: column;
   }
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
