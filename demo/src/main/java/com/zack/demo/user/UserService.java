@@ -1,11 +1,13 @@
 package com.zack.demo.user;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.zack.demo.post.GetPostDto;
 import com.zack.demo.post.PostRepo;
 
 @Service
@@ -53,13 +55,8 @@ public class UserService {
             res.put("error", "invalid Data");
             return res;
         }
-        User userById = userRepository.findById(id).get();
 
-        User user = userRepository.findByNickname(nickname).get();
-        if (user == null) {
-            res.put("error", "Unauthorized");
-            return res;
-        }
+        User userById = userRepository.findById(id).get();
 
         if (userById == null || !userById.getNickname().equals(data[0])) {
             res.put("error", "invalid Data");
@@ -67,5 +64,8 @@ public class UserService {
         }
         return null;
     }
-    
+
+    public List<GetPostDto> getUserPosts(long id, long offset) {
+        return postRepo.findUserPostsByOffsetAndLimit(id, id, id, 10, offset);
+    }
 }

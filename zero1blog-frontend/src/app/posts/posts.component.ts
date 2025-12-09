@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { OffsetLimitService } from '../services/offset-limit.service';
 import { ReportComponent } from '../report/report.component';
@@ -22,9 +22,10 @@ export class PostsComponent implements OnInit {
   targetedPost = -1;
   reportForm = false;
   deleteChecker = false;
-  // showCommentsComp = false;
   showTargetedPostId = -1;
 
+  @Input() target: string = '';
+  @Input() profileData: string | null = null;
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -65,10 +66,18 @@ export class PostsComponent implements OnInit {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
+
+    console.log('profile data: ', this.profileData);
+
     this.http
-      .get<any[]>(`${this.baseUrl}/getPosts?offset=${offset}`, {
-        headers,
-      })
+      .get<any[]>(
+        `${this.baseUrl}/${this.target}${
+          this.profileData ? '/' + this.profileData : ''
+        }?offset=${offset}`,
+        {
+          headers,
+        }
+      )
       .subscribe({
         next: (data: any) => {
           console.log(data);

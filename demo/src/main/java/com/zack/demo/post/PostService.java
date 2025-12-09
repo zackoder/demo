@@ -62,7 +62,7 @@ public class PostService {
         return res;
     }
 
-    public List<GetPostDto> getPosts(int offset, String nickname) {
+    public List<GetPostDto> getPosts(long offset, String nickname) {
         User user = userRepository.findByNickname(nickname).get();
         if (user == null) {
             return null;

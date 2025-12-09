@@ -33,7 +33,7 @@ public class PostController {
     private JwtService jwtService;
 
     @GetMapping("/getPosts")
-    public ResponseEntity<?> getPosts(@RequestParam int offset, @RequestHeader("authorization") String authHeader) {
+    public ResponseEntity<?> getPosts(@RequestParam long offset, @RequestHeader("authorization") String authHeader) {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return ResponseEntity.status(401).body("Missing or invalid Authorization header");
         }

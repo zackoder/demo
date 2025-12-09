@@ -3,10 +3,11 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment.prod';
+import { PostsComponent } from '../posts/posts.component';
 
 @Component({
   selector: 'app-profile',
-  imports: [NavbarComponent],
+  imports: [NavbarComponent, PostsComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css',
 })
