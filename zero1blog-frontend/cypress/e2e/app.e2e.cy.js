@@ -1,9 +1,11 @@
+// npx cypess open
+
 describe("Full E2E Flow", () => {
   const user = {
-    nickname: "Zack3",
+    nickname: "Zack4",
     firstName: "zakaria",
     lastName: "bess",
-    email: "zakaria2" + "_" + "bess" + "@gmail.com",
+    email: "zakaria3" + "_" + "bess" + "@gmail.com",
     password: "Password123!",
     confirmPassword: "Password123!",
   };

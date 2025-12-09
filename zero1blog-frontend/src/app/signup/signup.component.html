@@ -1,123 +1,180 @@
-<form (ngSubmit)="onSignUp()" class="signup-form" #signupForm="ngForm">
-  <div class="form-group">
-    <label for="nickname">Nickname</label>
+<form (ngSubmit)="onSignUp()" class="signup-form p-4" #signupForm="ngForm">
+  <!-- Nickname -->
+  <div class="mb-3">
+    <label for="nickname" class="form-label d-block fw-semibold"
+      >Nickname</label
+    >
     <input
       id="nickname"
       name="nickname"
       type="text"
+      class="form-control w-100 d-block"
       [(ngModel)]="data.nickname"
       required
     />
-    <p class="error" *ngIf="errorMsg.errNickname">{{ errorMsg.errNickname }}</p>
+    @if (errorMsg.errNickname) {
+    <p class="text-danger small mt-1">{{ errorMsg.errNickname }}</p>
+    }
   </div>
 
-  <div class="form-group">
-    <label for="firstName">First Name</label>
+  <!-- First Name -->
+  <div class="mb-3">
+    <label for="firstName" class="form-label d-block fw-semibold"
+      >First Name</label
+    >
     <input
       id="firstName"
       name="firstName"
       type="text"
+      class="form-control w-100 d-block"
       [(ngModel)]="data.firstName"
     />
-    <p class="error" *ngIf="errorMsg.errFirstName">
-      {{ errorMsg.errFirstName }}
-    </p>
+    @if (errorMsg.errFirstName) {
+    <p class="text-danger small mt-1">{{ errorMsg.errFirstName }}</p>
+    }
   </div>
 
-  <div class="form-group">
-    <label for="lastName">Last Name</label>
+  <!-- Last Name -->
+  <div class="mb-3">
+    <label for="lastName" class="form-label d-block fw-semibold"
+      >Last Name</label
+    >
     <input
       id="lastName"
       name="lastName"
       type="text"
+      class="form-control w-100 d-block"
       [(ngModel)]="data.lastName"
     />
-    <p class="error" *ngIf="errorMsg.errLastName">{{ errorMsg.errLastName }}</p>
+    @if (errorMsg.errLastName) {
+    <p class="text-danger small mt-1">{{ errorMsg.errLastName }}</p>
+    }
   </div>
 
-  <div class="form-group">
-    <label for="email">Email</label>
+  <!-- Email -->
+  <div class="mb-3">
+    <label for="email" class="form-label d-block fw-semibold">Email</label>
     <input
       id="email"
       name="email"
       type="email"
+      class="form-control w-100 d-block"
       [(ngModel)]="data.email"
       required
     />
-    <p class="error" *ngIf="errorMsg.errEmail">{{ errorMsg.errEmail }}</p>
+    @if (errorMsg.errEmail) {
+    <p class="text-danger small mt-1">{{ errorMsg.errEmail }}</p>
+    }
   </div>
 
   <!-- Password -->
-  <div class="form-group">
-    <label for="password">Password</label>
+  <div class="mb-3">
+    <label for="password" class="form-label d-block fw-semibold"
+      >Password</label
+    >
     <input
       id="password"
       name="password"
       type="password"
+      class="form-control w-100 d-block"
       [(ngModel)]="data.password"
       (ngModelChange)="onPasswordChange($event)"
       required
     />
-    <p class="error" *ngIf="errorMsg.errPassword">{{ errorMsg.errPassword }}</p>
+    @if (errorMsg.errPassword) {
+    <p class="text-danger small mt-1">{{ errorMsg.errPassword }}</p>
+    }
 
     <!-- Password Requirements -->
-    <div class="password-requirements">
+    <div class="password-requirements mt-2 ps-2">
       <p
-        [class.valid]="passwordValidation.hasLowerCase"
-        [class.invalid]="!passwordValidation.hasLowerCase"
+        class="small mb-1"
+        [class.text-success]="passwordValidation.hasLowerCase"
+        [class.text-danger]="!passwordValidation.hasLowerCase"
       >
-        ✓ At least one lowercase letter
+        {{ passwordValidation.hasLowerCase ? "✓" : "✗" }} At least one lowercase
+        letter
       </p>
+
       <p
-        [class.valid]="passwordValidation.hasUpperCase"
-        [class.invalid]="!passwordValidation.hasUpperCase"
+        class="small mb-1"
+        [class.text-success]="passwordValidation.hasUpperCase"
+        [class.text-danger]="!passwordValidation.hasUpperCase"
       >
-        ✓ At least one uppercase letter
+        {{ passwordValidation.hasUpperCase ? "✓" : "✗" }} At least one uppercase
+        letter
       </p>
+
       <p
-        [class.valid]="passwordValidation.hasNumber"
-        [class.invalid]="!passwordValidation.hasNumber"
+        class="small mb-1"
+        [class.text-success]="passwordValidation.hasNumber"
+        [class.text-danger]="!passwordValidation.hasNumber"
       >
-        ✓ At least one number
+        {{ passwordValidation.hasNumber ? "✓" : "✗" }} At least one number
       </p>
+
       <p
-        [class.valid]="passwordValidation.hasSpecialChar"
-        [class.invalid]="!passwordValidation.hasSpecialChar"
+        class="small mb-1"
+        [class.text-success]="passwordValidation.hasSpecialChar"
+        [class.text-danger]="!passwordValidation.hasSpecialChar"
       >
-        ✓ At least one special character
+        {{ passwordValidation.hasSpecialChar ? "✓" : "✗" }} At least one special
+        character
       </p>
+
       <p
-        [class.valid]="passwordValidation.hasMinLength"
-        [class.invalid]="!passwordValidation.hasMinLength"
+        class="small mb-1"
+        [class.text-success]="passwordValidation.hasMinLength"
+        [class.text-danger]="!passwordValidation.hasMinLength"
       >
-        ✓ At least 8 characters
+        {{ passwordValidation.hasMinLength ? "✓" : "✗" }} At least 8 characters
       </p>
     </div>
   </div>
 
-  <div class="form-group">
-    <label for="confirmPassword">Confirm Password</label>
+  <!-- Confirm Password -->
+  <div class="mb-3">
+    <label for="confirmPassword" class="form-label d-block fw-semibold"
+      >Confirm Password</label
+    >
     <input
       id="confirmPassword"
       name="confirmPassword"
       type="password"
+      class="form-control w-100"
       [(ngModel)]="data.confirmPassword"
       required
     />
-    <p class="error" *ngIf="errorMsg.errConfirmPassword">
-      {{ errorMsg.errConfirmPassword }}
-    </p>
+    @if (errorMsg.errConfirmPassword) {
+    <p class="text-danger small mt-1">{{ errorMsg.errConfirmPassword }}</p>
+    }
   </div>
 
   <!-- Bio -->
-  <div class="form-group">
-    <label for="bio">Bio</label>
-    <textarea id="bio" name="bio" [(ngModel)]="data.bio" rows="3"></textarea>
-    <p class="error" *ngIf="errorMsg.errBio">{{ errorMsg.errBio }}</p>
+  <div class="mb-3">
+    <label for="bio" class="form-label d-block fw-semibold">Bio</label>
+    <textarea
+      id="bio"
+      name="bio"
+      class="form-control w-100"
+      rows="3"
+      [(ngModel)]="data.bio"
+    ></textarea>
+    @if (errorMsg.errBio) {
+    <p class="text-danger small mt-1">{{ errorMsg.errBio }}</p>
+    }
   </div>
 
-  <button type="submit" [disabled]="isLoading || !signupForm.form.valid">
+  <!-- Submit -->
+  <button
+    type="submit"
+    class="btn btn-primary w-100 py-2 mt-2"
+    [disabled]="isLoading || !signupForm.form.valid"
+  >
     {{ isLoading ? "Signing up..." : "Sign Up" }}
   </button>
-  <p>already have an account <a (click)="login()">log in</a></p>
+
+  <p class="text-center mt-2 mb-1">
+    already have an account <a (click)="login()" class="link-primary">log in</a>
+  </p>
 </form>

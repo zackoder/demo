@@ -7,18 +7,16 @@
       src="http://localhost:8080/uploads/default-avatar.jpg"
       alt="default image"
     />
-    <!-- @if (show) { -->
     <ul
       class="options animate"
       [ngClass]="show ? 'options-visible' : 'options-hidden'"
       [style.visibility]="show ? 'visible' : 'hidden'"
     >
-      <li>Profile</li>
+      <li (click)="openProfile()">Profile</li>
       @if (isAdmin) {
       <li>Dashboard</li>
       }
       <li (click)="logout()">Log Out</li>
     </ul>
-    <!-- } -->
   </div>
 </header>

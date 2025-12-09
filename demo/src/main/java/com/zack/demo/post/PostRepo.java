@@ -41,4 +41,33 @@ public interface PostRepo extends JpaRepository<Post, Long> {
 
                         """, nativeQuery = true)
     List<GetPostDto> findPostsByOffsetAndLimit(long id, long id1, long limit, long offset);
+
+    @Query(value = """
+            SELECT
+                p.id,
+                p.content,
+                p.image_path,
+                p.user_id,
+                p.visibility,
+                p.created_at,
+                u.nickname,
+                SUM(CASE WHEN r.reaction_type = 'like' THEN 1 ELSE 0 END) AS likes,
+                SUM(CASE WHEN r.reaction_type = 'dislike' THEN 1 ELSE 0 END) AS dislikes,
+                CASE WHEN p.user_id = ?1 THEN true ELSE false END AS post_owner,
+                MAX(CASE WHEN r.user_id = ?2 THEN r.reaction_type ELSE '' END) AS reacted
+
+            FROM posts p
+            JOIN users u ON p.user_id = u.id
+            LEFT JOIN reactions r ON p.id = r.post_id
+            WHERE
+                p.user_id = ?3
+            GROUP BY
+                p.id, p.content, p.image_path, p.user_id, p.visibility, p.created_at, u.nickname
+
+            ORDER BY p.created_at DESC
+            LIMIT ?4 OFFSET ?5;
+
+                        """, nativeQuery = true)
+    List<GetPostDto> findUserPostsByOffsetAndLimit(long id, long id1, long id2, long limit, long offset);
+
 }
