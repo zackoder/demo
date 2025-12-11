@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from '../../environments/environment.prod';
 import { Router } from '@angular/router';
 import { NgClass } from '@angular/common';
+import { PostsService } from '../services/posts.service';
+import { OffsetLimitService } from '../services/offset-limit.service';
 
 @Component({
   selector: 'app-navbar',
@@ -15,19 +17,25 @@ export class NavbarComponent implements OnInit {
   show = false;
   isAdmin = true;
   data: any;
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private posts: PostsService,
+    private offset: OffsetLimitService
+  ) {}
   ngOnInit(): void {
     this.userCredentials();
   }
 
   openProfile() {
+    console.log('___________________ 5dam');
+
     const token = localStorage.getItem('jwtToken');
     if (!token) {
       this.router.navigate(['/login']);
       return;
     }
     this.router.navigate([`/profile/${this.data.nickname}.${this.data.id}`]);
-
   }
 
   userCredentials() {
@@ -59,5 +67,15 @@ export class NavbarComponent implements OnInit {
   logout() {
     localStorage.clear();
     this.router.navigate(['/login']);
+  }
+
+  goHome() {
+    console.log('go home');
+    if (this.router.url !== '/') {
+      this.posts.deleteAll();
+      this.offset.setOffset(0);
+    }
+
+    this.router.navigate(['/']);
   }
 }

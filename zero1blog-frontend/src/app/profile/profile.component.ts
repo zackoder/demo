@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment.prod';
 import { PostsComponent } from '../posts/posts.component';
@@ -19,28 +19,11 @@ export class ProfileComponent implements OnInit {
     private route: Router,
     private activatedRoute: ActivatedRoute
   ) {}
-  ngOnInit(): void {
-    const token = localStorage.getItem('jwtToken');
-    this.userId = this.activatedRoute.snapshot.paramMap.get('id');
-    if (!token || !this.userId) {
-      this.route.navigate(['/login']);
-      return;
-    }
-    this.getUserData(this.userId, token);
-  }
 
-  getUserData(userCredentials: string | null, token: string) {
-    this.http
-      .get<any>(`${this.baseUrl}/userData/${userCredentials}`, {
-        headers: { authorization: `Bearer ${token}` },
-      })
-      .subscribe({
-        next: (res: any) => {
-          console.log(res);
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
+  ngOnInit(): void {
+    this.activatedRoute.paramMap.subscribe((params: ParamMap) => {
+      this.userId = params.get('id');
+      console.log(this.userId);
+    });
   }
 }

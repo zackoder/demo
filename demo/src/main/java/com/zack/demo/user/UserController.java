@@ -46,9 +46,8 @@ public class UserController {
         if (res != null) {
             return ResponseEntity.status(403).body(res);
         }
-
-        List<GetPostDto> posts = userService.getUserPosts(2, offset);
-        // getData
+        long id = Long.parseLong(data[1]);
+        List<GetPostDto> posts = userService.getUserPosts(id, offset);
         return ResponseEntity.ok().body(posts);
     }
 }

@@ -18,12 +18,15 @@ export class PostsService {
   getPosts() {
     return this.posts();
   }
-  
+
   deletePost(index: number) {
     this.posts.update((current) => {
       const newPosts = [...current];
       newPosts.splice(index, 1);
       return [...newPosts];
     });
+  }
+  deleteAll() {
+    this.posts = signal<any[]>([]);
   }
 }

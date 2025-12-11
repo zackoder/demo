@@ -1,6 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, HostListener, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  ParamMap,
+  Router,
+} from '@angular/router';
 import { OffsetLimitService } from '../services/offset-limit.service';
 import { ReportComponent } from '../report/report.component';
 import { environment } from '../../environments/environment.prod';
@@ -23,7 +28,7 @@ export class PostsComponent implements OnInit {
   reportForm = false;
   deleteChecker = false;
   showTargetedPostId = -1;
-
+  currentPath = '';
   @Input() target: string = '';
   @Input() profileData: string | null = null;
   constructor(
@@ -31,11 +36,18 @@ export class PostsComponent implements OnInit {
     private router: Router,
     private offsetService: OffsetLimitService,
     public postsService: PostsService
-  ) {}
+  ) {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.handleRouteChange();
+      }
+    });
+  }
 
   ngOnInit(): void {
-    console.log('before fetching', this.offsetService.getOffset());
-    this.fetchPosts();
+    console.log('before fetching');
+    this.currentPath = this.router.url;
+    this.fetchPosts(0);
   }
 
   @HostListener('window:scroll', ['$event'])
@@ -52,9 +64,19 @@ export class PostsComponent implements OnInit {
   }
 
   fetchPosts(offset = 0) {
+    let target = this.router.url;
+    console.log(this.currentPath === target);
+
+    if (target === '/') {
+      target += 'getPosts';
+    }
+    if (target.startsWith('/profile')) {
+      target = target.replace('/profile', '/userData');
+    }
     if (this.isLoading) return;
     this.isLoading = true;
     const token = localStorage.getItem('jwtToken');
+
     if (!token) {
       this.router.navigate(['/login']);
       return;
@@ -67,17 +89,10 @@ export class PostsComponent implements OnInit {
       Authorization: `Bearer ${token}`,
     });
 
-    console.log('profile data: ', this.profileData);
-
     this.http
-      .get<any[]>(
-        `${this.baseUrl}/${this.target}${
-          this.profileData ? '/' + this.profileData : ''
-        }?offset=${offset}`,
-        {
-          headers,
-        }
-      )
+      .get<any[]>(`${this.baseUrl}${target}?offset=${offset}`, {
+        headers,
+      })
       .subscribe({
         next: (data: any) => {
           console.log(data);
@@ -188,5 +203,36 @@ export class PostsComponent implements OnInit {
           console.log(err);
         },
       });
+  }
+
+  goToProfile(nickname: string, id: number) {
+    console.log('11111111111111111111');
+
+    const profile = `/profile/${nickname}.${id}`;
+    if (profile !== this.router.url) {
+      this.offsetService.setOffset(0);
+      this.postsService.deleteAll();
+    }
+    this.router.navigate([profile]);
+    return;
+  }
+
+  handleRouteChange() {
+    const newPath = this.router.url;
+
+    if (
+      newPath.startsWith('/profile') &&
+      this.currentPath.startsWith('/profile')
+    ) {
+    if (newPath !== this.currentPath) {
+      // If the path changed, reset posts and fetch again
+      this.postsService.deleteAll();
+      this.offsetService.setOffset(0);
+      this.nothingToFetch = false;
+
+        // if (newPath !== this.currentPath) this.fetchPosts(0);
+      }
+      this.currentPath = newPath;
+    }
   }
 }
