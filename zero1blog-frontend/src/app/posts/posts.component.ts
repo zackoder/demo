@@ -1,21 +1,17 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, HostListener, Input, OnInit } from '@angular/core';
-import {
-  ActivatedRoute,
-  NavigationEnd,
-  ParamMap,
-  Router,
-} from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { OffsetLimitService } from '../services/offset-limit.service';
 import { ReportComponent } from '../report/report.component';
 import { environment } from '../../environments/environment.prod';
 import { PostsService } from '../services/posts.service';
 import { CommentsComponent } from '../comments/comments.component';
 import { formatDate as formatDateUtil } from '../utils/dateFormater';
+import { AddPostComponent } from '../add-post/add-post.component';
 
 @Component({
   selector: 'app-posts',
-  imports: [ReportComponent, CommentsComponent],
+  imports: [ReportComponent, CommentsComponent, AddPostComponent],
   templateUrl: './posts.component.html',
   styleUrl: './posts.component.css',
 })
@@ -45,9 +41,9 @@ export class PostsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('before fetching');
-    this.currentPath = this.router.url;
-    this.fetchPosts(0);
+    // console.log('before fetching');
+    // this.currentPath = this.router.url;
+    // this.fetchPosts(0);
   }
 
   @HostListener('window:scroll', ['$event'])
@@ -64,8 +60,10 @@ export class PostsComponent implements OnInit {
   }
 
   fetchPosts(offset = 0) {
+    if (this.isLoading) return;
+    this.isLoading = true;
     let target = this.router.url;
-    console.log(this.currentPath === target);
+    console.log(this.currentPath);
 
     if (target === '/') {
       target += 'getPosts';
@@ -73,8 +71,7 @@ export class PostsComponent implements OnInit {
     if (target.startsWith('/profile')) {
       target = target.replace('/profile', '/userData');
     }
-    if (this.isLoading) return;
-    this.isLoading = true;
+
     const token = localStorage.getItem('jwtToken');
 
     if (!token) {
@@ -218,21 +215,24 @@ export class PostsComponent implements OnInit {
   }
 
   handleRouteChange() {
+    if (this.isLoading) return;
     const newPath = this.router.url;
 
-    if (
-      newPath.startsWith('/profile') &&
-      this.currentPath.startsWith('/profile')
-    ) {
-    if (newPath !== this.currentPath) {
-      // If the path changed, reset posts and fetch again
-      this.postsService.deleteAll();
-      this.offsetService.setOffset(0);
-      this.nothingToFetch = false;
+    console.log('waaaaaaaa3333333333333333333333', newPath);
 
-        if (newPath !== this.currentPath) this.fetchPosts(0);
-      }
-      this.currentPath = newPath;
-    }
+    // if (
+    //   newPath.startsWith('/profile') &&
+    //   this.currentPath.startsWith('/profile')
+    // ) {
+    //   if (newPath !== this.currentPath) {
+    //     this.postsService.deleteAll();
+    //     this.offsetService.setOffset(0);
+    //     this.nothingToFetch = false;
+
+    //     if (newPath !== this.currentPath) this.fetchPosts(0);
+    //   }
+    //   this.currentPath = newPath;
+    // }
+    this.fetchPosts(0);
   }
 }

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../environments/environment.prod';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { PostsService } from '../services/posts.service';
 import { OffsetLimitService } from '../services/offset-limit.service';
@@ -12,24 +12,24 @@ import { OffsetLimitService } from '../services/offset-limit.service';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent {
   baseUrl = environment.apiUrl;
   show = false;
   isAdmin = true;
+  isLoading = false;
   data: any;
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    private posts: PostsService,
-    private offset: OffsetLimitService
-  ) {}
-  ngOnInit(): void {
-    this.userCredentials();
+  currentPath!: string;
+  constructor(private http: HttpClient, private router: Router) {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.userCredentials();
+        this.currentPath = this.router.url;
+        console.log(this.currentPath);
+      }
+    });
   }
 
   openProfile() {
-    console.log('___________________ 5dam');
-
     const token = localStorage.getItem('jwtToken');
     if (!token) {
       this.router.navigate(['/login']);
@@ -39,6 +39,8 @@ export class NavbarComponent implements OnInit {
   }
 
   userCredentials() {
+    if (this.isLoading) return;
+    this.isLoading = true;
     const token = localStorage.getItem('jwtToken');
     if (!token) {
       this.router.navigate(['/login']);
@@ -53,9 +55,11 @@ export class NavbarComponent implements OnInit {
         next: (res) => {
           this.data = res;
           console.log(this.data);
+          this.isLoading = false;
         },
         error: (err) => {
           console.log(err);
+          this.isLoading = false;
         },
       });
   }
@@ -69,13 +73,13 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  goHome() {
-    console.log('go home');
-    if (this.router.url !== '/') {
-      this.posts.deleteAll();
-      this.offset.setOffset(0);
-    }
+  // goHome() {
+  //   console.log('go home');
+  //   if (this.router.url !== '/') {
+  //     this.posts.deleteAll();
+  //     this.offset.setOffset(0);
+  //   }
 
-    this.router.navigate(['/']);
-  }
+  //   this.router.navigate(['/']);
+  // }
 }
