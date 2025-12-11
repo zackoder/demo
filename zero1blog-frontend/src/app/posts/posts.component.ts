@@ -230,7 +230,7 @@ export class PostsComponent implements OnInit {
       this.offsetService.setOffset(0);
       this.nothingToFetch = false;
 
-        // if (newPath !== this.currentPath) this.fetchPosts(0);
+        if (newPath !== this.currentPath) this.fetchPosts(0);
       }
       this.currentPath = newPath;
     }
